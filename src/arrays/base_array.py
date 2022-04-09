@@ -10,16 +10,16 @@ class BaseArray:
             if duration is None:
                 raise errors.ImproperConfig('must set duration or array')
             self._array = []
-            for _ in range(duration):
-                self._array.append(Cell(value=None, name=name, fmt=fmt))
+            for i in range(duration):
+                self._array.append(Cell(value=None, name=f"{name} [{i}]", fmt=fmt))
         else:
             duration = len(array)
             self._array = []
-            for item in array:
+            for i, item in enumerate(array):
                 if isinstance(item, Cell):
                     self._array.append(item)
                 else:
-                    self._array.append(Cell(value=item, name=name, fmt=fmt))
+                    self._array.append(Cell(value=item, name=f"{name} [{i}]", fmt=fmt))
         # self.changed_value = Signal()
         # self.changed = Signal()
 
@@ -28,6 +28,18 @@ class BaseArray:
 
     def __getitem__(self, i) -> Cell:
         return self._array[i]
+
+    def __iter__(self):
+        self.n = 0
+        return self
+
+    def __next__(self):
+        if self.n < self.duration:
+            result = self._array[self.n]
+            self.n += 1
+            return result
+        else:
+            raise StopIteration
 
     @property
     def duration(self):

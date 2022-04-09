@@ -23,20 +23,73 @@ class Array(BaseArray):
     def total(self):
         return self.total_cell.value
 
+    @staticmethod
+    def sum(*args, name='Unnamed Array', fmt=None, duration=None):
+        if len(args):
+            duration = len(args[0])
+        if duration is None:
+            raise errors.ImproperConfig("Must set either args or duration.")
+        result = Array(duration=duration, name=name, fmt=fmt)
+        for array in args:
+            if not len(array) == duration:
+                raise ValueError(f"Cannot add arrays of different length: {len(array)}, {duration}")
+            for i, cell in enumerate(array):
+                result[i].add(cell)
+        return result
+
+    @staticmethod
+    def sub_all(*args, name='Unnamed Array', fmt=None, duration=None):
+        if len(args):
+            duration = len(args[0])
+        if duration is None:
+            raise errors.ImproperConfig("Must set either args or duration.")
+        result = Array(duration=duration, name=name, fmt=fmt)
+        for array in args:
+            if not len(array) == duration:
+                raise ValueError(f"Cannot add arrays of different length: {len(array)}, {duration}")
+            for i, cell in enumerate(array):
+                result[i].sub(cell)
+        return result
+
+    def print(self):
+        for cell in self._array:
+            cell.print()
+
+    def print_cells(self):
+        for i, cell in enumerate(self._array):
+            print(i, ": ", repr(cell))
+
+    def add(self, *args):
+        for array in args:
+            if not len(array) == self.duration:
+                raise ValueError(f"Cannot add arrays of different length: {len(array)}, {self.duration}")
+            for i, cell in enumerate(array):
+                self[i].add(cell)
+    
+    def sub(self, *args):
+        for array in args:
+            if not len(array) == self.duration:
+                raise ValueError(f"Cannot subtract arrays of different length: {len(array)}, {self.duration}")
+            for i, cell in enumerate(array):
+                self[i].sub(cell)
+
     def __add__(self, other):
         array = Array(duration=self.duration, fmt=self.fmt)
         if isinstance(other, BaseArray):
             if not len(self) == len(other):
                 raise ValueError(f"Cannot add arrays of different length: {len(self)}, {len(other)}")
+            other_name = other.name
             for i, cell in enumerate(array):
                 cell.add(self[i])
                 cell.add(other[i])
         elif isinstance(other, (int, float, Decimal, Cell)):
+            other_name = str(other)
             for i, cell in enumerate(array):
                 cell.add(self[i])
                 cell.add(other)
         else:
             raise TypeError(f"Cannot add type {type(self)} and {type(other)}")
+        array.name = self.name + " + " + other_name
         return array
 
     __radd__ = __add__
@@ -130,12 +183,8 @@ class Array(BaseArray):
     def __neg__(self):
         # array = Array(array=[-1]*self.duration, fmt=self.fmt)
         # return array * self
-        print([-1*i for i in self._array])
+        # print([-1*i for i in self._array])
         return Array(array=[-1*i for i in self._array], name=f"-1*{self.name}", fmt=self.fmt)
-
-    def print_cells(self):
-        for i, cell in enumerate(self._array):
-            print(i, ": ", repr(cell))
 
 
 def zeros(duration, name="Unnamed Array", fmt=None):
@@ -143,21 +192,11 @@ def zeros(duration, name="Unnamed Array", fmt=None):
 
 
 def array_sum(arrays, name="Unnamed Array", fmt=None):
-    array = sum(arrays)
-    array.name = name
-    array.fmt = fmt
+    duration = len(arrays[0])
+    array = Array(duration=duration, name=name, fmt=fmt)
+    for arr in arrays:
+        array += arr
+    # array = sum(arrays)
+    # array.name = name
+    # array.fmt = fmt
     return array
-
-
-if __name__=="__main__":
-    # a = Array(array=[0,1,2,3,4,5])
-    # print(a[1:3])
-    a = Array(array=(10, 20, 30), name='a')
-    b = Array(array=(40, 50, 60), name='b')
-    c = a + b
-    # c.print_cells()
-    a = Array(array=(0,0,0,0,0))
-    # a = zeros(5)
-    print(a.get_value(2))
-    print(a[2].value)
-

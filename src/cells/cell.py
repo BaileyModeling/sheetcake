@@ -5,6 +5,7 @@ from sheetcake.src.utils import get_value, is_number
 class Cell:
 
     def __init__(self, value=None, name=None, fmt=None) -> None:
+        self.locked = False
         if isinstance(value, Cell):
             self._value = get_value(value)
             # value.changed.connect(self.update)
@@ -24,7 +25,7 @@ class Cell:
         else:
             fmt = self.fmt
         cls_name = self.__class__.__name__
-        return f"{cls_name}({self._value}, {self.name}, {fmt})"
+        return f"{cls_name}({self._value}, '{self.name}', {fmt})"
 
     def __str__(self) -> str:
         formatter = str
@@ -38,10 +39,15 @@ class Cell:
 
     @value.setter
     def value(self, value):
+        # print(f"Setting value of '{self.name}' to {value}")
+        if self.locked:
+            print(f"Cannot change value of locked cell {self.name} to {value}")
+            return None
         initial_value = self._value
         self._value = value
+        self.operations = []  # value is no longer dynamic
         if not initial_value == self._value:
-            # print("emitting signal")
+            # print(f"Cell '{self.name}' emitting signal changed to {self._value}")
             self.changed.emit()
 
     @property
@@ -64,8 +70,10 @@ class Cell:
                 result += f' {operation} '
             if hasattr(arg, 'formula_audit'):
                 result += f"[ {arg.formula_audit} ]"
+            elif hasattr(arg, 'formula'):
+                result += f"[ {arg.formula} ]"
             elif hasattr(arg, 'name') and arg.name is None:
-                result += "<anonymous>"
+                result += "<Unnamed Cell>"
             elif hasattr(arg, "name"):
                 result += arg.name
             else:
@@ -84,7 +92,20 @@ class Cell:
             result += str(self._value)
         print(result)
 
+    def lock(self):
+        self.locked = True
+
+    def unlock(self):
+        self.locked = False
+
+    def lock_value(self, value):
+        self.value = value
+        self.locked = True
+
     def update(self):
+        # print(f"Cell '{self.name}' received update signal.")
+        if self.locked or not self.operations:
+            return None
         cumulative = None
         for row in self.operations:
             if row[0] == "=":
@@ -99,7 +120,11 @@ class Cell:
                 cumulative = div_item(cumulative, row[1])
             elif row[0] == "//":
                 cumulative = floordiv_item(cumulative, row[1])
-        self.value = cumulative
+        initial_value = self._value
+        self._value = cumulative
+        if not initial_value == self._value:
+            # print(f"Cell '{self.name}' changed value from {initial_value} to {self._value}.")
+            self.changed.emit()
 
     def sum(self, *args):
         value = 0
@@ -117,7 +142,10 @@ class Cell:
     def add(self, item):
         if hasattr(item, 'changed'):
             item.changed.connect(self.update)
-        self.operations.append(("+", item))
+        if not self.operations:
+            self.operations.append(("=", item))
+        else:
+            self.operations.append(("+", item))
         self.update()
         return self.value
 
@@ -146,13 +174,18 @@ class Cell:
         if hasattr(other, "array"):
             return other + self
         cell = Cell()
-        cell.add(self)
+        cell.equal(self)
         cell.add(other)
         # print("self: ", repr(self))
         # print("other: ", repr(other))
         return cell
 
-    __radd__ = __add__
+    # __radd__ = __add__
+    def __radd__(self, other):
+        if other == 0:
+            return self
+        else:
+            return self.__add__(other)
 
     def __sub__(self, other):
         # cannot import Array to test using isinstance
@@ -160,13 +193,13 @@ class Cell:
             # breakpoint()
             return -other + self
         cell = Cell()
-        cell.add(self)
+        cell.equal(self)
         cell.sub(other)
         return cell
 
     def __rsub__(self, other):
         cell = Cell()
-        cell.add(other)
+        cell.equal(other)
         cell.sub(self)
         return cell
 
@@ -274,15 +307,3 @@ def floordiv_item(cumulative, item):
         else:
             cumulative = cumulative // item_value
     return cumulative
-
-
-if __name__=="__main__":
-    # a = Cell(5, "a")
-    # b = Cell(3, "b")
-    # c = 2* (a + b)
-    # c.print()
-    # print(c.operations)
-    # print(c.formula)
-    # print(c.formula_audit)
-    f = Cell(0)
-    print(f._value)
