@@ -275,8 +275,8 @@ def sub_item(cumulative, item):
 
 
 def mult_item(cumulative, item):
-    item_value = get_value(item, default=0)
-    if item_value:
+    item_value = get_value(item, default=None)
+    if item_value is not None:
         if cumulative is None:
             cumulative = item_value
         else:

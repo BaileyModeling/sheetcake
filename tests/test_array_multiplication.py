@@ -4,13 +4,13 @@ import pytest
 
 
 def test_multiplying_two_arrays():
-    a = Array(array=(3, 4, 5), name='a')
-    b = Array(array=(6, 7, 8), name='b')
+    a = Array(array=(-1, 2, 5), name='a')
+    b = Array(array=(6, 7, 0), name='b')
     c = a * b
-    assert c[0] == 18
-    assert c[1] == 28
-    assert c[2] == 40
-    assert c.total == 86
+    assert c[0] == -6
+    assert c[1] == 14
+    assert c[2] == 0
+    assert c.total == 8
 
 
 def test_multiplying_array_and_cell():

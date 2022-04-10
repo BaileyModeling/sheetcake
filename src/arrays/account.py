@@ -19,8 +19,6 @@ class Account:
         self.bbal = BeginningBalance(self.duration)
         self.ebal = EndingBalance(self.duration)
 
-        # for i, cell in enumerate(self.bbal):
-        #     self.ebal[i].add(cell)
         bbal_plus_args = [self.bbal] + self.args
         for array in bbal_plus_args:
             if not len(array) == duration:

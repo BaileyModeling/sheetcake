@@ -1,4 +1,3 @@
-from re import A
 from sheetcake.src.arrays.array_sum import ArraySum
 from sheetcake import Array
 
