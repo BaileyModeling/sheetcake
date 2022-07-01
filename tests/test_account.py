@@ -78,3 +78,25 @@ def test_if_bbal_is_set_it_will_not_update(array_a, array_b):
     assert acco.ebal[0].value == 110
     assert acco.ebal[1].value == 222
     assert acco.ebal[2].value == 255
+
+
+def test_account_no_duration_raises_error():
+    with pytest.raises(Exception) as e_info:
+        acco = Account()
+
+
+def test_account_init_diff_length_raises_error():
+    array_a = Array(array=(1, 2, 3), name='a')
+    array_b = Array(array=(10, 20), name='b')
+    with pytest.raises(Exception) as e_info:
+        acco = Account(array_a, array_b)
+
+
+def test_account_add_diff_length_raises_error(acco):
+    array_c = Array(array=(10, 20), name='c')
+    with pytest.raises(Exception) as e_info:
+        acco.add(array_c)
+
+
+def test_account_arrays(acco: Account):
+    assert len(acco.arrays) == 2
