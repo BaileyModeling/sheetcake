@@ -1,12 +1,14 @@
-from .base_array import BaseArray
-from .array import Array
+from sheetcake2 import Array, Cell
+from typing import List
 
 
 class EndingBalance(Array):
+    default_name = "Ending Balance"
 
-    def __init__(self, duration=None, name='Ending Balance', array=None, fmt=None):
-        super(Array, self).__init__(duration, name, array, fmt)
+    def __init__(self, array: List[Cell], name: str = 'Ending Balance') -> None:
+        super().__init__(array=array, name=name)
+        self.total = self.array[-1]
 
-    @property
-    def total(self):
-        return self._array[-1].value
+    def append(self, cell: Cell):
+        self.array.append(cell)
+        self.total = self.array[-1]

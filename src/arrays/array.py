@@ -1,88 +1,179 @@
-from sheetcake.src import errors
-from sheetcake import Cell
-from sheetcake.src.arrays.base_array import BaseArray
+from typing import Callable, List
 from decimal import Decimal
+import numpy as np
+from sheetcake2 import Cell, SumCell, MaxCell, MinCell
+from sheetcake2.src.utils import is_number, is_iterable
 
 
-class Array(BaseArray):
-    def __init__(self, duration=None, name='Unnamed Array', array=None, fmt=None):
-        super().__init__(duration, name, array, fmt)
-        self.total_cell = Cell(None, name=f'{name} Total', fmt=fmt)
-        self.total_cell.sum(*self._array)
+class Array:
+    default_name = "Array"
 
-    def __repr__(self):
-        '''Returns representation of the object'''
-        if self.fmt is not None:
-            fmt = self.fmt.__name__
-        else:
-            fmt = self.fmt
-        cls_name = self.__class__.__name__
-        return f"{cls_name}({self.duration}, {self.name}, {self._array}, {fmt})"
+    def __init__(self, array: List[Cell], name: str = "") -> None:
+        self.name = name or self.default_name
+        self.array = array
+        self.fmt = array[0].fmt
+        self.total = SumCell(self.array, name=f"{name} Total", fmt=self.fmt)
 
     @property
-    def total(self):
-        return self.total_cell.value
+    def columns(self) -> List[Cell]:
+        return self.array
+    
+    def __str__(self):
+        return self.name
 
-    @staticmethod
-    def sum(*args, name='Unnamed Array', fmt=None, duration=None):
-        if len(args):
-            duration = len(args[0])
-        if duration is None:
-            raise errors.ImproperConfig("Must set either args or duration.")
-        result = Array(duration=duration, name=name, fmt=fmt)
-        for array in args:
-            if not len(array) == duration:
-                raise ValueError(f"Cannot add arrays of different length: {len(array)}, {duration}")
-            for i, cell in enumerate(array):
-                result[i].add(cell)
-        return result
+    def __getitem__(self, i) -> Cell:
+        return self.columns[i]
 
-    @staticmethod
-    def sub_all(*args, name='Unnamed Array', fmt=None, duration=None):
-        if len(args):
-            duration = len(args[0])
-        if duration is None:
-            raise errors.ImproperConfig("Must set either args or duration.")
-        result = Array(duration=duration, name=name, fmt=fmt)
-        for array in args:
-            if not len(array) == duration:
-                raise ValueError(f"Cannot add arrays of different length: {len(array)}, {duration}")
-            for i, cell in enumerate(array):
-                result[i].sub(cell)
-        return result
+    def __len__(self) -> int:
+        return len(self.array)
+
+    def __iter__(self):
+        self.n = 0
+        return self
+
+    def __next__(self):
+        if self.n < self.duration:
+            result = self.array[self.n]
+            self.n += 1
+            return result
+        else:
+            raise StopIteration
+
+    @property
+    def duration(self):
+        return len(self.array)
+
+    def append(self, cell: Cell):
+        self.array.append(cell)
+        self.total.add(cell)
+
+    def set_value(self, i, value):
+        self.array[i].value = value
+
+    def get_value(self, i):
+        return self.array[i].value
+
+    def set_values(self, array, start:int=0):
+        for i, value in enumerate(array):
+            self.array[start + i].value = value
 
     def print(self):
-        for cell in self._array:
-            cell.print()
+        print(self.name)
+        for i, cell in enumerate(self.array):
+            print(f"\t{i:<3}: {str(cell)}")
 
-    def print_cells(self):
-        for i, cell in enumerate(self._array):
-            print(i, ": ", repr(cell))
+    def print_cells(self, width: int = 15):
+        for cell in self.array:
+            cell.print(width=width)
 
-    def add(self, *args):
-        for array in args:
-            if not len(array) == self.duration:
-                raise ValueError(f"Cannot add arrays of different length: {len(array)}, {self.duration}")
-            for i, cell in enumerate(array):
-                self[i].add(cell)
+    def print_row(self, seperator: str = " | "):
+        result = seperator.join(list(str(cell) for cell in self.array))
+        print(result)
+
+    def print_formulas(self, width: int = 15, deep: bool = False):
+        for cell in self.array:
+            print(f"{cell.name:<{width}}: {cell.formula(deep=deep)}")
+
+    def print_value_audit(self, width: int = 15, deep: bool = False):
+        for cell in self.array:
+            print(f"{cell.name:<{width}}: {cell.value_audit(deep=deep)}")
+
+    def equal(self, other):
+        if isinstance(other, (Array, np.ndarray, list, tuple)):
+            for i, cell in enumerate(other):
+                self.array[i].equal(cell)
+        elif isinstance(other, (int, float, Decimal, Cell)):
+            for cell in self.array:
+                cell.equal(other)
+        else:
+            raise TypeError(f"Cannot equal type {type(self)} and {type(other)}")
+        return self
+
+    def add(self, other):
+        if isinstance(other, (Array, np.ndarray, list, tuple)):
+            for i, cell in enumerate(other):
+                self.array[i].add(cell)
+        elif isinstance(other, (int, float, Decimal, Cell)):
+            for cell in self.array:
+                cell.add(other)
+        else:
+            raise TypeError(f"Cannot add type {type(self)} and {type(other)}")
+        return self
+
+    def mult(self, other):
+        if isinstance(other, (Array, np.ndarray, list, tuple)):
+            for i, cell in enumerate(other):
+                self.array[i].mult(cell)
+        elif isinstance(other, (int, float, Decimal, Cell)):
+            for cell in self.array:
+                cell.mult(other)
+        else:
+            raise TypeError(f"Cannot mult type {type(self)} and {type(other)}")
+        return self
+
+    @classmethod
+    def sum(cls, arrays: List["Array"], name: str = None, tolerance = 0.0, fmt: Callable = str, callback: Callable = None, locked: bool = False, validation_rules: List[Callable] = None):
+        """
+        Construct an Array that is the sum of a list of arrays.
+        """
+        name = name or cls.default_name
+        array = []
+        for col in range(len(arrays[0])):
+            cell = SumCell(cells=[row[col] for row in arrays], name=f"{name}[{col}]", tolerance=tolerance, fmt=fmt, callback=callback, locked=locked, validation_rules=validation_rules)
+            array.append(cell)
+        return cls(array=array, name=name)
+
+    @classmethod
+    def from_values(cls, values: List, name: str = None, fmt: Callable = str, tolerance = 0.0, callback: Callable = None, locked: bool = False, validation_rules: List[Callable] = None) -> "Array":
+        """
+        Construct an Array from a list of values.
+        """
+        name = name or cls.default_name
+        array = [Cell(value=value, name=f"{name}[{i}]", tolerance=tolerance, fmt=fmt, callback=callback, locked=locked, validation_rules=validation_rules) for i, value in enumerate(values)]
+        return cls(array=array, name=name)
+
+    @classmethod
+    def zeros(cls, num_cols: int, name: str = None, fmt: Callable = str, tolerance = 0.0, callback: Callable = None, locked: bool = False, validation_rules: List[Callable] = None) -> "Array":
+        """
+        Construct an Array with zero values.
+        """
+        name = name or cls.default_name
+        array = [Cell(value=0, name=f"{name}[{i}]", tolerance=tolerance, fmt=fmt, callback=callback, locked=locked, validation_rules=validation_rules) for i in range(num_cols)]
+        return cls(array=array, name=name)
+
+    @classmethod
+    def blank(cls, num_cols: int, name: str = None, fmt: Callable = str, tolerance = 0.0, callback: Callable = None, locked: bool = False, validation_rules: List[Callable] = None) -> "Array":
+        """
+        Construct an Array of empty cells.
+        """
+        name = name or cls.default_name
+        array = [Cell(value=None, name=f"{name}[{i}]", tolerance=tolerance, fmt=fmt, callback=callback, locked=locked, validation_rules=validation_rules) for i in range(num_cols)]
+        return cls(array=array, name=name)
     
-    def sub(self, *args):
-        for array in args:
-            if not len(array) == self.duration:
-                raise ValueError(f"Cannot subtract arrays of different length: {len(array)}, {self.duration}")
-            for i, cell in enumerate(array):
-                self[i].sub(cell)
+    @classmethod
+    def max(cls, arrays: List["Array"], name: str = "MaxArray", tolerance = 0.0, fmt: Callable = str, callback: Callable = None, locked: bool = False, validation_rules: List[Callable] = None):
+        """
+        Construct an Array that is the max of a list of arrays.
+        """
+        name = name or cls.default_name
+        iterables = [array for array in arrays if is_iterable(array)]
+        scalar = [array for array in arrays if is_scalar(array)]
+        array = []
+        for col in range(len(iterables[0])):
+            cell = MaxCell(cells=[row[col] for row in iterables]+scalar, name=f"{name}[{col}]", tolerance=tolerance, fmt=fmt, callback=callback, locked=locked, validation_rules=validation_rules)
+            array.append(cell)
+        return cls(array=array, name=name)
 
     def __add__(self, other):
-        array = Array(duration=self.duration, fmt=self.fmt)
-        if isinstance(other, BaseArray):
+        array = Array.blank(num_cols=len(self), fmt=self.fmt)
+        if is_vector(other):
             if not len(self) == len(other):
                 raise ValueError(f"Cannot add arrays of different length: {len(self)}, {len(other)}")
             other_name = other.name
             for i, cell in enumerate(array):
                 cell.add(self[i])
                 cell.add(other[i])
-        elif isinstance(other, (int, float, Decimal, Cell)):
+        elif is_scalar(other):
             other_name = str(other)
             for i, cell in enumerate(array):
                 cell.add(self[i])
@@ -95,14 +186,14 @@ class Array(BaseArray):
     __radd__ = __add__
 
     def __sub__(self, other):
-        array = Array(duration=self.duration, fmt=self.fmt)
-        if isinstance(other, BaseArray):
+        array = Array.blank(num_cols=len(self), fmt=self.fmt)
+        if is_vector(other):
             if not len(self) == len(other):
                 raise ValueError(f"Cannot add arrays of different length: {len(self)}, {len(other)}")
             for i, cell in enumerate(array):
                 cell.add(self[i])
                 cell.sub(other[i])
-        elif isinstance(other, (int, float, Decimal, Cell)):
+        elif is_scalar(other):
             for i, cell in enumerate(array):
                 cell.add(self[i])
                 cell.sub(other)
@@ -111,30 +202,33 @@ class Array(BaseArray):
         return array
 
     def __rsub__(self, other):
-        if isinstance(other, BaseArray):
+        array = Array.blank(num_cols=len(self), fmt=self.fmt)
+        if is_vector(other):
             if not len(self) == len(other):
                 raise ValueError(f"Cannot add arrays of different length: {len(self)}, {len(other)}")
-            array = Array(duration=self.duration, fmt=self.fmt)
             for i, cell in enumerate(array):
                 cell.add(other[i])
                 cell.sub(self[i])
-        elif isinstance(other, (int, float, Decimal, Cell)):
-            array = Array(array=[other]*self.duration, fmt=self.fmt)
+        elif is_scalar(other):
             for i, cell in enumerate(array):
+                cell.add(other)
                 cell.sub(self[i])
         else:
             raise TypeError(f"Cannot subtract type {type(self)} and {type(other)}")
         return array
 
+    def __neg__(self):
+        return Array(array=[-1*cell for cell in self.array], name=f"-1*{self.name}")
+
     def __mul__(self, other):
-        array = Array(duration=self.duration, fmt=self.fmt)
-        if isinstance(other, BaseArray):
+        array = Array.blank(num_cols=len(self), fmt=self.fmt)
+        if is_vector(other):
             if not len(self) == len(other):
                 raise ValueError(f"Cannot add arrays of different length: {len(self)}, {len(other)}")
             for i, cell in enumerate(array):
                 cell.add(self[i])
                 cell.mult(other[i])
-        elif isinstance(other, (int, float, Decimal, Cell)):
+        elif is_scalar(other):
             for i, cell in enumerate(array):
                 cell.add(self[i])
                 cell.mult(other)
@@ -145,14 +239,14 @@ class Array(BaseArray):
     __rmul__ = __mul__
 
     def __div__(self, other):
-        array = Array(duration=self.duration, fmt=self.fmt)
-        if isinstance(other, BaseArray):
+        array = Array.blank(num_cols=len(self), fmt=self.fmt)
+        if is_vector(other):
             if not len(self) == len(other):
                 raise ValueError(f"Cannot add arrays of different length: {len(self)}, {len(other)}")
             for i, cell in enumerate(array):
                 cell.add(self[i])
                 cell.div(other[i])
-        elif isinstance(other, (int, float, Decimal, Cell)):
+        elif is_scalar(other):
             for i, cell in enumerate(array):
                 cell.add(self[i])
                 cell.div(other)
@@ -163,8 +257,8 @@ class Array(BaseArray):
     __truediv__ = __div__
 
     def __rdiv__(self, other):
-        array = Array(duration=self.duration, fmt=self.fmt)
-        if isinstance(other, BaseArray):
+        array = Array.blank(num_cols=len(self), fmt=self.fmt)
+        if is_vector(other):
             if not len(self) == len(other):
                 raise ValueError(f"Cannot add arrays of different length: {len(self)}, {len(other)}")
             for i, cell in enumerate(array):
@@ -180,23 +274,23 @@ class Array(BaseArray):
 
     __rtruediv__ = __rdiv__
 
-    def __neg__(self):
-        # array = Array(array=[-1]*self.duration, fmt=self.fmt)
-        # return array * self
-        # print([-1*i for i in self._array])
-        return Array(array=[-1*i for i in self._array], name=f"-1*{self.name}", fmt=self.fmt)
+
+def is_scalar(value) -> bool:
+    """
+    Return True if the value is a scalar, False otherwise.
+    """
+    # return isinstance(value, (Cell, int, float, Decimal))
+    if isinstance(value, (Cell, int, float, Decimal, np.floating, np.int, np.float, np.complex, )):
+        return True
+    if isinstance(value, np.ndarray):
+        return False
+    if str(type(value)).startswith("<class 'numpy."):
+        return True
+    return False
 
 
-def zeros(duration, name="Unnamed Array", fmt=None):
-    return Array(name=name, array=[0]*duration, fmt=fmt)
-
-
-def array_sum(arrays, name="Unnamed Array", fmt=None):
-    duration = len(arrays[0])
-    array = Array(duration=duration, name=name, fmt=fmt)
-    for arr in arrays:
-        array += arr
-    # array = sum(arrays)
-    # array.name = name
-    # array.fmt = fmt
-    return array
+def is_vector(value) -> bool:
+    """
+    Return True if the value is a vector, False otherwise.
+    """
+    return isinstance(value, (Array, np.ndarray, list, tuple))

@@ -1,10 +1,26 @@
 from decimal import Decimal
+import numpy as np
 
 
-def is_number(obj):
-    if isinstance(obj, (int, float, Decimal)):
+def is_number(value) -> bool:
+    """
+    Return True if the value is a number, False otherwise.
+    """
+    if isinstance(value, (int, float, Decimal, np.floating, np.int, np.float, np.complex, )):
         return True
-    else:
+    if str(type(value)).startswith("<class 'numpy."):
+        return True
+    return False
+
+
+def is_iterable(value) -> bool:
+    """
+    Return True if the value is an iterable, False otherwise.
+    """
+    try:
+        iter(value)
+        return True
+    except TypeError:
         return False
 
 

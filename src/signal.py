@@ -1,4 +1,5 @@
 class Signal:
+
     def __init__(self) -> None:
         self._slots = []
 
@@ -11,3 +12,10 @@ class Signal:
     def emit(self, *args, **kwargs):
         for slot in self._slots:
             slot(*args, **kwargs)
+
+    def disconnect(self, slot):
+        if self.is_connected(slot):
+            self._slots.pop(self._slots.index(slot))
+
+    def is_connected(self, slot):
+        return slot in self._slots
