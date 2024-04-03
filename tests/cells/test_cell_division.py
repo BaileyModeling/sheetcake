@@ -1,5 +1,5 @@
-from sheetcake2 import Cell
-from sheetcake2.src.cells.cell import div_item, floordiv_item
+from sheetcake import Cell
+from sheetcake.src.cells.cell import div_item, floordiv_item
 import pytest
 
 

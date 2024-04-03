@@ -1,4 +1,4 @@
-from sheetcake2 import Cell, MinCell
+from sheetcake import Cell, MinCell
 import pytest
 from typing import List
 

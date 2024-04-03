@@ -1,5 +1,5 @@
 from datetime import date, timedelta
-from sheetcake2 import dates
+from sheetcake import dates
 
 
 def test_count_months_partial():

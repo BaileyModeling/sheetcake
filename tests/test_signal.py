@@ -1,4 +1,4 @@
-from sheetcake2.src.signal import Signal
+from sheetcake.src.signal import Signal
 import pytest
 
 

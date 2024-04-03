@@ -1,4 +1,4 @@
-from sheetcake2 import Cell, Array, fmt
+from sheetcake import Cell, Array, fmt
 
 # array = Array.from_values([1000, 2000, 3000, 400000], "Array", fmt=fmt.accounting)
 

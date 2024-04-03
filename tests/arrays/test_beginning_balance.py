@@ -1,4 +1,4 @@
-from sheetcake2 import BeginningBalance, EndingBalance
+from sheetcake import BeginningBalance, EndingBalance
 import pytest
 
 

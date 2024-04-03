@@ -1,5 +1,5 @@
-from sheetcake2 import Cell
-from sheetcake2 import validation_rules as vr
+from sheetcake import Cell
+from sheetcake import validation_rules as vr
 import pytest
 
 

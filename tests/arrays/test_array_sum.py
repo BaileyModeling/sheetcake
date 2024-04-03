@@ -1,4 +1,4 @@
-from sheetcake2 import Array
+from sheetcake import Array
 
 
 def test_adding_one_array_to_blank_array():

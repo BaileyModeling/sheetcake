@@ -1,6 +1,6 @@
-from sheetcake2 import Array, Cell
+from sheetcake import Array, Cell
 import pytest
-from sheetcake2.src.arrays.array import is_scalar
+from sheetcake.src.arrays.array import is_scalar
 import numpy as np
 
 

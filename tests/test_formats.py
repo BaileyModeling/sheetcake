@@ -1,4 +1,4 @@
-from sheetcake2 import fmt
+from sheetcake import fmt
 from datetime import date
 
 

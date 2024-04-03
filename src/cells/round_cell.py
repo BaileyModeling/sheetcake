@@ -1,6 +1,6 @@
 from .cell import Cell
 from typing import List, Callable
-from sheetcake2.src.utils import is_number
+from sheetcake.src.utils import is_number
 
 
 class RoundCell(Cell):

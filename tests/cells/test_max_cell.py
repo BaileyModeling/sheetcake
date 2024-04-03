@@ -1,4 +1,4 @@
-from sheetcake2 import Cell, MaxCell
+from sheetcake import Cell, MaxCell
 import pytest
 from typing import List
 

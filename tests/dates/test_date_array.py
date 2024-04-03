@@ -1,6 +1,6 @@
 # from datetime import date
 # import pytest
-# from sheetcake2.src.date_array import DateArray
+# from sheetcake.src.date_array import DateArray
 
 
 # def test_date_array_repr():

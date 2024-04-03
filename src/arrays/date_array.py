@@ -1,7 +1,7 @@
 import numpy as np
 import datetime as dt
-from sheetcake2 import DateRow, Row, fmt
-from sheetcake2.src.dates import str_to_date, beginning_of_month, relativedelta, eomonth, days_in_year, count_days
+from sheetcake import DateRow, Row, fmt
+from sheetcake.src.dates import str_to_date, beginning_of_month, relativedelta, eomonth, days_in_year, count_days
 from dataclasses import dataclass
 from typing import List, Tuple
 

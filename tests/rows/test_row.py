@@ -1,4 +1,4 @@
-from sheetcake2 import Row
+from sheetcake import Row
 
 
 def test_row_get_value():

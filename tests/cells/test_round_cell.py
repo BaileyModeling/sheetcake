@@ -1,4 +1,4 @@
-from sheetcake2 import RoundCell, Cell
+from sheetcake import RoundCell, Cell
 import pytest
 
 

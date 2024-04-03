@@ -1,7 +1,7 @@
 from typing import Callable, List, Tuple
 from decimal import Decimal
-from sheetcake2 import Signal
-from sheetcake2.src.utils import is_number, get_value
+from sheetcake import Signal
+from sheetcake.src.utils import is_number, get_value
 
 
 class Cell:

@@ -1,4 +1,4 @@
-from sheetcake2 import Cell, MaxCell, RoundCell
+from sheetcake import Cell, MaxCell, RoundCell
 from typing import List
 
 
@@ -70,7 +70,7 @@ rnd.print()
 print(rnd.formula())
 """
 
-# from sheetcake2 import Array
+# from sheetcake import Array
 # import numpy as np
 
 # a = Array.from_values(values=(4, 9, 16), name='a')

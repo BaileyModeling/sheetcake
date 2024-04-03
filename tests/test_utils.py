@@ -1,4 +1,4 @@
-from sheetcake2.src.utils import get_value
+from sheetcake.src.utils import get_value
 
 
 def test_get_value_returns_default():

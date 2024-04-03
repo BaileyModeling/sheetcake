@@ -1,6 +1,6 @@
 from .cell import Cell
 from typing import List, Callable
-from sheetcake2.src.utils import get_value
+from sheetcake.src.utils import get_value
 
 
 class MinCell(Cell):

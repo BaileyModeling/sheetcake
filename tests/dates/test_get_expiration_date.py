@@ -1,5 +1,5 @@
 from datetime import date
-from sheetcake2 import dates
+from sheetcake import dates
 
 
 def test_get_expiration_date():

@@ -1,4 +1,4 @@
-from sheetcake2 import Cell, SumCell
+from sheetcake import Cell, SumCell
 import pytest
 from typing import List
 

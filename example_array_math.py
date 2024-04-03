@@ -1,10 +1,10 @@
-from sheetcake2 import Array, Cell, BeginningBalance, EndingBalance
-from sheetcake2 import fmt
+from sheetcake import Array, Cell, BeginningBalance, EndingBalance
+from sheetcake import fmt
 from datetime import date
 
 
 if __name__ == '__main__':
-    from sheetcake2 import DateArray, dates
+    from sheetcake import DateArray, dates
     # a = Array.from_values(values=(-100, 0, 100), name='a')
     # b = Cell(10, "b")
     # array = a - b - b

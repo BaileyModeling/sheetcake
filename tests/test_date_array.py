@@ -1,6 +1,6 @@
 from datetime import date
 import pytest
-from sheetcake2 import DateArray
+from sheetcake import DateArray
 from types import SimpleNamespace
 
 

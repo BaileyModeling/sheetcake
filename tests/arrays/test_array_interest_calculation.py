@@ -1,5 +1,5 @@
-from sheetcake2 import Array, Cell, BeginningBalance, EndingBalance
-from sheetcake2 import fmt, DateArray, dates
+from sheetcake import Array, Cell, BeginningBalance, EndingBalance
+from sheetcake import fmt, DateArray, dates
 # from rem import DateArray
 # from rem.src import dates
 from datetime import date

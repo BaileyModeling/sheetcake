@@ -1,6 +1,6 @@
-from sheetcake2 import DateCell, dates
-from sheetcake2.src.cells.date_cell import edays_cell, edate_cell, eomonth_cell, max_date_cell, min_date_cell, AbstractDateOperation
-# from sheetcake2.src.cells.date_cell import edays_cell
+from sheetcake import DateCell, dates
+from sheetcake.src.cells.date_cell import edays_cell, edate_cell, eomonth_cell, max_date_cell, min_date_cell, AbstractDateOperation
+# from sheetcake.src.cells.date_cell import edays_cell
 from datetime import date
 import datetime
 

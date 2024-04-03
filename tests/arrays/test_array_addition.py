@@ -1,4 +1,4 @@
-from sheetcake2 import Array, Cell
+from sheetcake import Array, Cell
 from decimal import Decimal
 import pytest
 

@@ -1,8 +1,8 @@
 from typing import Callable, List
 from decimal import Decimal
 import numpy as np
-from sheetcake2 import Cell, SumCell, MaxCell, MinCell
-from sheetcake2.src.utils import is_number, is_iterable
+from sheetcake import Cell, SumCell, MaxCell, MinCell
+from sheetcake.src.utils import is_number, is_iterable
 
 
 class Array:

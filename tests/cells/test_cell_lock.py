@@ -1,4 +1,4 @@
-from sheetcake2 import Cell
+from sheetcake import Cell
 
 
 def test_cell_lock():

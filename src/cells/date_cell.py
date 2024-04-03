@@ -1,7 +1,7 @@
 from copy import copy
 from typing import Callable, List, Tuple, Union
 from datetime import date, datetime
-from sheetcake2 import Signal, fmt, dates, errors
+from sheetcake import Signal, fmt, dates, errors
 
 
 class DateCell:

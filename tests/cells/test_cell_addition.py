@@ -1,4 +1,4 @@
-from sheetcake2 import Cell
+from sheetcake import Cell
 from decimal import Decimal
 
 

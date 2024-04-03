@@ -1,4 +1,4 @@
-from sheetcake2 import DateRow
+from sheetcake import DateRow
 from datetime import date
 
 
