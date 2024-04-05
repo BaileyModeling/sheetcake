@@ -22,6 +22,8 @@ class Array:
         return self.name
 
     def __getitem__(self, i) -> Cell:
+        if i == len(self.array):
+            return self.total
         return self.columns[i]
 
     def __len__(self) -> int:

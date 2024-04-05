@@ -12,6 +12,11 @@ def test_array_init():
     assert a[0].value == 1
 
 
+def test_array_returns_total_as_last_element():
+    a = Array.from_values(values=[1, 2, 3, 4, 5])
+    assert a[5].value == 15
+
+
 def test_array_init_total():
     a = Array.from_values(values=[1, 2, 3, 4, 5])
     assert a.total.value == 15
