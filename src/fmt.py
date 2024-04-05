@@ -51,6 +51,24 @@ def percentage(*args, **kwargs):
     return percent(*args, **kwargs)
 
 
+def percent4(amount: float) -> str:
+    """12.3456%"""
+    if amount is None or amount == "":
+        return ""
+    elif isinstance(amount, str):
+        return amount
+    return "{:,.4f}%".format(amount * 100)
+
+
+def percent5(amount: float) -> str:
+    """12.34567%"""
+    if amount is None or amount == "":
+        return ""
+    elif isinstance(amount, str):
+        return amount
+    return "{:,.5f}%".format(amount * 100)
+
+
 def date(on_date: dt.date) -> str:
     """12/31/2023"""
     if on_date is None:

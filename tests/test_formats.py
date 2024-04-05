@@ -26,6 +26,30 @@ def test_percentage():
     assert fmt.percentage(0.123456789) == "12.35%"
 
 
+def test_percent4():
+    assert fmt.percent4(0.123456789) == "12.3457%"
+
+
+def test_percent4_none():
+    assert fmt.percent4(None) == ""
+
+
+def test_percent4_str():
+    assert fmt.percent4("string") == "string"
+
+
+def test_percent5():
+    assert fmt.percent5(0.123456789) == "12.34568%"
+
+
+def test_percent5_none():
+    assert fmt.percent5(None) == ""
+
+
+def test_percent5_str():
+    assert fmt.percent5("string") == "string"
+
+
 def test_accounting_string_input():
     assert fmt.accounting("1234567.89") == "1234567.89"
 
