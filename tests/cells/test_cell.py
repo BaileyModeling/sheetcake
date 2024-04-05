@@ -7,6 +7,12 @@ class CallbackClass:
         self.variable = value
 
 
+class ObserverClass:
+    variable = None
+    def callback(self, value):
+        self.variable = value
+
+
 def test_cell_str():
     a = Cell(5)
     assert str(a) == "5"
@@ -32,6 +38,14 @@ def test_cell_callback():
     c.sum(a, b)
     a.value = 10
     assert test_object.variable == 12
+
+
+def test_cell_signal_sends_new_value():
+    observer = ObserverClass()
+    a = Cell(5, "name")
+    a.changed.connect(observer.callback)
+    a.value = 10
+    assert observer.variable == 10
 
 
 def test_cell_print():

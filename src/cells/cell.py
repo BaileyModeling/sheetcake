@@ -134,7 +134,7 @@ class Cell:
         self.validate()
         if self.has_changed(initial_value):
             # print(f"Cell '{self.name}' changed value from {initial_value} to {self._value}.")
-            self.changed.emit()
+            self.changed.emit(value=self._value)
             if self.callback:
                 print(f"Cell '{self.name}' calling callback with value {self._value}")
                 self.callback(self._value)
