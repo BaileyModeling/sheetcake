@@ -105,3 +105,9 @@ def test_array_total_updates_after_append():
     a = Array.from_values(values=(10, 20, 30), name='a')
     a.append(Cell(40))
     assert a.total == 100
+
+
+def test_array_cell_meta_data():
+    a = Array.from_values(values=(10, 20, 30), name='a')
+    a[0].meta_data["key"] = "value"
+    assert a[0].meta_data.get("key") == "value"

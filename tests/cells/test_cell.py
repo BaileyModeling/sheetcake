@@ -27,7 +27,7 @@ def test_cell_repr():
 def test_cell_repr_callback():
     test_object = CallbackClass()
     a = Cell(5, "name", callback=test_object.callback)
-    assert repr(a) == "Cell(5, name='name', tolerance=0.0, fmt=str, callback=callback, locked=False, validation_rules=[])"
+    assert repr(a) == "Cell(5, name='name', tolerance=0.0, fmt=str, callback=callback, locked=False, validation_rules=[], meta_data={})"
 
 
 def test_cell_callback():
@@ -224,6 +224,17 @@ def test_cell_not_equal_number():
 def test_cell_has_changed_below_tolerance():
     a = Cell(5.50, tolerance=0.1)
     assert not a.has_changed(5.54)
+
+
+def test_cell_meta_data():
+    a = Cell(5, "name")
+    a.meta_data["key"] = "value"
+    assert a.meta_data["key"] == "value"
+
+
+def test_cell_meta_data_init():
+    a = Cell(5, "name", meta_data={"key": "value"})
+    assert a.meta_data["key"] == "value"
 
 
 # TODO: test decimal math

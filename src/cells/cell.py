@@ -1,4 +1,4 @@
-from typing import Callable, List, Tuple
+from typing import Callable, List, Tuple, Dict
 from decimal import Decimal
 from sheetcake import Signal
 from sheetcake.src.utils import is_number, get_value
@@ -14,7 +14,8 @@ class Cell:
         fmt: Callable = str,
         callback: Callable = None,
         locked: bool = False,
-        validation_rules: List[Callable] = None
+        validation_rules: List[Callable] = None,
+        meta_data: Dict = None,
     ) -> None:
         """
         callback: callback function to update GUI upon change
@@ -28,6 +29,7 @@ class Cell:
         self.callback = callback
         self._value = value
         self.locked = locked
+        self.meta_data = meta_data or {}
 
         if isinstance(value, Cell):
             self._value = value.value
@@ -42,12 +44,12 @@ class Cell:
 
     def __repr__(self) -> str:
         fmt = self.fmt.__name__
-        if self.callback is not None:
+        if self.callback is not None and hasattr(self.callback, '__name__'):
             callback = self.callback.__name__
         else:
             callback = None
         validation_rules = repr(self.validation_rules)
-        return f"Cell({self._value}, name='{self.name}', tolerance={self.tolerance}, fmt={fmt}, callback={callback}, locked={self.locked}, validation_rules={validation_rules})"
+        return f"Cell({self._value}, name='{self.name}', tolerance={self.tolerance}, fmt={fmt}, callback={callback}, locked={self.locked}, validation_rules={validation_rules}, meta_data={repr(self.meta_data)})"
 
     def print(self, width: int = 15):
         result = f'{self.name:<{width}}: {self.fmt(self._value)}'
@@ -97,7 +99,7 @@ class Cell:
 
     @value.setter
     def value(self, value):
-        print(f"Setting value of '{self.name}' to {value}")
+        # print(f"Setting value of '{self.name}' to {value}")
         if self.locked:
             print(f"Cannot change value of locked cell {self.name} to {value}")
             return None
@@ -136,7 +138,7 @@ class Cell:
             # print(f"Cell '{self.name}' changed value from {initial_value} to {self._value}.")
             self.changed.emit(value=self._value)
             if self.callback:
-                print(f"Cell '{self.name}' calling callback with value {self._value}")
+                # print(f"Cell '{self.name}' calling callback with value {self._value}")
                 self.callback(self._value)
 
     def validate(self):
