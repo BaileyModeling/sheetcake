@@ -10,6 +10,17 @@ def test_adding_two_arrays():
     assert c.get_value(0) == 50
     assert c.get_value(1) == 70
     assert c.get_value(2) == 90
+    assert c.total == 210
+
+
+def test_adding_two_arrays_with_add_method():
+    a = Array.from_values(values=(10, 20, 30), name='a')
+    b = Array.from_values(values=(40, 50, 60), name='b')
+    a.add(b)
+    assert a.get_value(0) == 50
+    assert a.get_value(1) == 70
+    assert a.get_value(2) == 90
+    assert a.total == 210
 
 
 def test_adding_array_and_cell():

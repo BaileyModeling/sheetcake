@@ -2,6 +2,12 @@ from sheetcake import Array, Cell
 import pytest
 
 
+def test_array_repr():
+    a = Array.from_values(values=(10, 20, 30), name='a')
+    repr(a)
+    assert True
+
+
 def test_array_length():
     a = Array.blank(5)
     assert len(a) == 5

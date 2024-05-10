@@ -260,8 +260,10 @@ def test_monthlyrange():
     assert result[1] == date(2022,2,1)
     assert result[2] == date(2022,3,1)
 
+
 def test_prorate():
     assert abs(dates.prorate(100, date(2022, 2, 15), inclusive=False) - 50) < 0.01
+
 
 def test_prorate_inclusive():
     assert abs(dates.prorate(100, date(2022, 2, 14), inclusive=True) - 50) < 0.01
@@ -271,3 +273,7 @@ def test_count_years():
     assert dates.count_years(date(2022,1,1), date(2022,12,31)) == 0
     assert dates.count_years(date(2022,1,1), date(2023,1,1)) == 1
     assert dates.count_years(date(2022,12,31), date(2023,1,1)) == 1
+
+
+def test_prorate_eom():
+    assert abs(dates.prorate_eom(100, date(2022, 2, 15)) - 50) < 0.01

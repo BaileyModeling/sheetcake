@@ -3,15 +3,16 @@ from decimal import Decimal
 import numpy as np
 from sheetcake import Cell, SumCell, MaxCell, MinCell
 from sheetcake.src.utils import is_number, is_iterable
-
+from sheetcake.src.fmt import comma2
 
 class Array:
     default_name = "Array"
 
-    def __init__(self, array: List[Cell], name: str = "") -> None:
+    def __init__(self, array: List[Cell], name: str = "", fmt: Callable = None) -> None:
         self.name = name or self.default_name
         self.array = array
-        self.fmt = array[0].fmt
+        default_fmt = array[0].fmt if array else comma2
+        self.fmt = fmt or default_fmt
         self.total = SumCell(self.array, name=f"{name} Total", fmt=self.fmt)
 
     @property
@@ -20,6 +21,9 @@ class Array:
     
     def __str__(self):
         return self.name
+    
+    def __repr__(self):
+        return f"Array({repr(self.array)}, name={self.name})"
 
     def __getitem__(self, i) -> Cell:
         if i == len(self.array):

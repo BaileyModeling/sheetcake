@@ -17,6 +17,11 @@ def test_sum_cell_init(cells: List[Cell]):
     assert sum_cell.value == 0.5
 
 
+def test_sum_cell_init_empty_list():
+    sum_cell = SumCell(cells=[])
+    assert sum_cell.value == None
+
+
 def test_sum_cell_smallest_updates(cells: List[Cell]):
     sum_cell = SumCell(cells)
     cells[0].value = 100

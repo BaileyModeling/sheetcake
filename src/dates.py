@@ -253,3 +253,8 @@ def eomonth_range(start_date: datetime.date, duration: int) -> Iterator[datetime
 
 def prorate(amount: float, on_date: datetime.date, inclusive: bool = False) -> float:
     return amount * pct_days_passed(on_date, inclusive=inclusive)
+
+
+def prorate_eom(amount: float, start_date: datetime.date) -> float:
+    """Prorate amount based on days remaining in month including start date."""
+    return amount * pct_remaining_days(start_date)
