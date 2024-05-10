@@ -136,6 +136,8 @@ class DateCell:
     def edays(self, cell: "DateCell", num_days: int, update: bool = True):
         if hasattr(cell, 'changed'):
             cell.changed.connect(self.update)
+        if hasattr(num_days, 'changed'):
+            num_days.changed.connect(self.update)
         cell = cell or self.operations
         self.operations = EdaysDateOperation(cell, num_days)
         if update:
@@ -145,6 +147,8 @@ class DateCell:
     def edate(self, cell: "DateCell", num_months: int, update: bool = True):
         if hasattr(cell, 'changed'):
             cell.changed.connect(self.update)
+        if hasattr(num_months, 'changed'):
+            num_months.changed.connect(self.update)
         cell = cell or self.operations
         self.operations = EdateDateOperation(cell, num_months)
         if update:
@@ -154,6 +158,8 @@ class DateCell:
     def eomonth(self, cell: "DateCell", num_months: int = 0, update: bool = True):
         if hasattr(cell, 'changed'):
             cell.changed.connect(self.update)
+        if hasattr(num_months, 'changed'):
+            num_months.changed.connect(self.update)
         cell = cell or self.operations
         self.operations = EomonthDateOperation(cell, num_months)
         if update:
@@ -350,7 +356,8 @@ class EdaysDateOperation(AbstractDateOperation):
     @property
     def value(self) -> date:
         start_date = get_value(self.dt_item)
-        return dates.edays(start_date=start_date, num_days=self.num_days)
+        num_days = get_value(self.num_days)
+        return dates.edays(start_date=start_date, num_days=num_days)
 
     def formula(self, deep: bool = False):
         if deep and hasattr(self.dt_item, 'formula'):
@@ -380,7 +387,8 @@ class EdateDateOperation(AbstractDateOperation):
     @property
     def value(self) -> date:
         start_date = get_value(self.dt_item)
-        return dates.edate(start_date=start_date, num_months=self.num_months)
+        num_months = get_value(self.num_months)
+        return dates.edate(start_date=start_date, num_months=num_months)
 
     def formula(self, deep: bool = False):
         if deep and hasattr(self.dt_item, 'formula'):
@@ -410,7 +418,8 @@ class EomonthDateOperation(AbstractDateOperation):
     @property
     def value(self) -> date:
         start_date = get_value(self.dt_item)
-        return dates.eomonth(start_date=start_date, num_months=self.num_months)
+        num_months = get_value(self.num_months)
+        return dates.eomonth(start_date=start_date, num_months=num_months)
 
     def formula(self, deep: bool = False):
         if deep and hasattr(self.dt_item, 'formula'):

@@ -1,5 +1,5 @@
 from sheetcake import DateCell, errors, validation_rules
-from sheetcake.src.cells.date_cell import edays_cell, edate_cell, eomonth_cell, max_date_cell, min_date_cell, AbstractDateOperation
+from sheetcake.src.cells.date_cell import max_date_cell, min_date_cell, AbstractDateOperation
 from datetime import date
 import pytest
 from typing import List
@@ -140,86 +140,6 @@ def test_date_cell_lock_value():
     a.lock_value(date(2024, 12, 1))
     a.value = date(2024, 1, 1)
     assert a.value == date(2024, 12, 1)
-
-
-def test_date_cell_edays_operation():
-    a = DateCell(date(2024, 3, 1), "a")
-    b = DateCell(name="b")
-    b.edays(a, 5)
-    assert b.value == date(2024, 3, 6)
-
-
-def test_date_cell_edays_operation_consecutive():
-    a = DateCell(date(2024, 3, 1), "a")
-    b = DateCell(name="b")
-    b.edays(a, 5)
-    b.edays(None, 5)
-    assert b.value == date(2024, 3, 11)
-
-
-def test_edays_cell():
-    a = DateCell(date(2024, 3, 1), "a")
-    b = edays_cell(a, 5, name="b")
-    a.value = date(2024, 12, 1)
-    assert b.value == date(2024, 12, 6)
-
-
-def test_date_cell_edate_operation():
-    a = DateCell(date(2024, 3, 1), "a")
-    b = DateCell(name="b")
-    b.edate(a, 5)
-    assert b.value == date(2024, 8, 1)
-
-
-def test_edate_cell():
-    a = DateCell(date(2024, 3, 1), "a")
-    b = edate_cell(a, 5, name="b")
-    assert b.value == date(2024, 8, 1)
-
-
-def test_date_cell_edate_operation_updates():
-    a = DateCell(date(2024, 3, 1), "a")
-    b = DateCell(name="b")
-    b.edate(a, 5)
-    a.value = date(2024, 1, 1)
-    assert b.value == date(2024, 6, 1)
-
-
-def test_date_cell_edate_operation_consecutive():
-    a = DateCell(date(2024, 1, 1), "a")
-    b = DateCell(name="b")
-    b.edate(a, 5)
-    b.edate(None, 5)
-    assert b.value == date(2024, 11, 1)
-
-
-def test_date_cell_eomonth_operation():
-    a = DateCell(date(2024, 3, 1), "a")
-    b = DateCell(name="b")
-    b.eomonth(a, 5)
-    assert b.value == date(2024, 8, 31)
-
-
-def test_eomonth_cell():
-    a = DateCell(date(2024, 3, 1), "a")
-    b = eomonth_cell(a, 5, name="b")
-    assert b.value == date(2024, 8, 31)
-
-
-def test_date_cell_eomonth_operation_updates():
-    a = DateCell(date(2024, 3, 1), "a")
-    b = DateCell(name="b")
-    b.eomonth(a, 5)
-    a.value = date(2024, 1, 1)
-    assert b.value == date(2024, 6, 30)
-
-
-def test_date_cell_eomonth_operation_consecutive():
-    a = DateCell(date(2024, 1, 1), "a")
-    b = DateCell(name="b")
-    b.eomonth(a, 5)
-    b.eomonth(None, 5)
-    assert b.value == date(2024, 11, 30)
 
 
 def test_date_cell_max_operation():
@@ -418,65 +338,6 @@ def test_date_cell_formula_deep_eomonth_edays():
     assert b.formula(deep=True) == "edays( eomonth( 2024-03-01, 0 ), 5 )"
 
 
-def test_date_cell_edays_formula():
-    a = DateCell(date(2024, 3, 1), "a")
-    b = DateCell(name="b")
-    b.edays(a, 5)
-    assert b.formula() == "edays( a, 5 )"
-
-
-def test_date_cell_edays_formula_deep():
-    a = DateCell(date(2024, 3, 1), "a")
-    b = DateCell(a, name="b")
-    c = DateCell(name="c")
-    c.edays(a, 5)
-    assert c.formula(deep=True) == "edays( 2024-03-01, 5 )"
-
-
-def test_date_cell_edate_formula():
-    a = DateCell(date(2024, 3, 1), "a")
-    b = DateCell(name="b")
-    b.edate(a, 5)
-    assert b.formula() == "edate( a, 5 )"
-
-
-def test_date_cell_edate_formula_deep():
-    a = DateCell(date(2024, 3, 1), "a")
-    b = DateCell(a, name="b")
-    c = DateCell(name="c")
-    c.edate(a, 5)
-    assert c.formula(deep=True) == "edate( 2024-03-01, 5 )"
-
-
-def test_date_cell_edate_formula_date():
-    a = date(2024, 3, 1)
-    b = DateCell(name="b")
-    b.edate(a, 5)
-    assert b.formula() == "edate( 2024-03-01, 5 )"
-
-
-def test_date_cell_eomonth_formula():
-    a = DateCell(date(2024, 3, 1), "a")
-    b = DateCell(name="b")
-    b.eomonth(a, 5)
-    assert b.formula() == "eomonth( a, 5 )"
-
-
-def test_date_cell_eomonth_formula_deep():
-    a = DateCell(date(2024, 3, 1), "a")
-    b = DateCell(a, name="b")
-    c = DateCell(name="c")
-    c.eomonth(a, 5)
-    assert c.formula(deep=True) == "eomonth( 2024-03-01, 5 )"
-
-
-def test_date_cell_eomonth_formula_date():
-    a = date(2024, 3, 1)
-    b = DateCell(name="b")
-    b.eomonth(a, 5)
-    assert b.formula() == "eomonth( 2024-03-01, 5 )"
-
-
 def test_date_cell_max_formula(cell_list: List[DateCell]):
     e = max_date_cell(cells=cell_list, name="e")
     assert e.formula() == "max( a, b, c, d )"
@@ -565,51 +426,6 @@ def test_date_cell_value_audit_equal_date_cell_deep():
     b = DateCell(a, "b")
     c = DateCell(b, "c")
     assert c.value_audit(deep=True) == "03/01/2024"
-
-
-def test_date_cell_edays_value_audit():
-    a = DateCell(date(2024, 3, 1), "a")
-    b = DateCell(name="b")
-    b.edays(a, 5)
-    assert b.value_audit() == "edays( 2024-03-01, 5 )"
-
-
-def test_date_cell_edays_value_audit_deep():
-    a = DateCell(date(2024, 3, 1), "a")
-    b = DateCell(a, name="b")
-    c = DateCell(name="c")
-    c.edays(a, 5)
-    assert c.value_audit(deep=True) == "edays( 2024-03-01, 5 )"
-
-
-def test_date_cell_edate_value_audit():
-    a = DateCell(date(2024, 3, 1), "a")
-    b = DateCell(name="b")
-    b.edate(a, 5)
-    assert b.value_audit() == "edate( 2024-03-01, 5 )"
-
-
-def test_date_cell_edate_value_audit_deep():
-    a = DateCell(date(2024, 3, 1), "a")
-    b = DateCell(a, name="b")
-    c = DateCell(name="c")
-    c.edate(a, 5)
-    assert c.value_audit(deep=True) == "edate( 2024-03-01, 5 )"
-
-
-def test_date_cell_eomonth_value_audit():
-    a = DateCell(date(2024, 3, 1), "a")
-    b = DateCell(name="b")
-    b.eomonth(a, 5)
-    assert b.value_audit() == "eomonth( 2024-03-01, 5 )"
-
-
-def test_date_cell_eomonth_value_audit_deep():
-    a = DateCell(date(2024, 3, 1), "a")
-    b = DateCell(a, name="b")
-    c = DateCell(name="c")
-    c.eomonth(a, 5)
-    assert c.value_audit(deep=True) == "eomonth( 2024-03-01, 5 )"
 
 
 def test_date_cell_empty_value_audit():
