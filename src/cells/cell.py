@@ -123,6 +123,8 @@ class Cell:
                 cumulative = div_item(cumulative, cell)
             elif operation == "//":
                 cumulative = floordiv_item(cumulative, cell)
+            elif operation == "^":
+                cumulative = exp_item(cumulative, cell)
         return cumulative
 
     def update(self, **kwargs):
@@ -222,6 +224,14 @@ class Cell:
         if update:
             self.update()
         return self
+    
+    def exp(self, cell: "Cell", update: bool = True):
+        if hasattr(cell, 'changed'):
+            cell.changed.connect(self.update)
+        self.operations.append(("^", cell))
+        if update:
+            self.update()
+        return self
 
     def __add__(self, other):
         if hasattr(other, "array"):
@@ -290,6 +300,12 @@ class Cell:
         cell = Cell()
         cell.equal(other)
         cell.floordiv(self)
+        return cell
+    
+    def __pow__(self, other):
+        cell = Cell()
+        cell.equal(self)
+        cell.exp(other)
         return cell
 
     def __neg__(self):
@@ -369,3 +385,13 @@ def floordiv_item(cumulative, item):
     if item_value == 0:
         raise ZeroDivisionError
     return cumulative // item_value
+
+
+def exp_item(cumulative, item):
+    item_value = get_value(item, default=None)
+    if item_value is not None:
+        if cumulative is None:
+            cumulative = item_value
+        else:
+            cumulative **= item_value
+    return cumulative
