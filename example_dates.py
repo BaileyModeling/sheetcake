@@ -1,4 +1,4 @@
-from sheetcake import DateCell, dates
+from sheetcake import DateCell, dates, CountDaysCell
 from sheetcake.src.cells.date_cell import edays_cell, edate_cell, eomonth_cell, max_date_cell, min_date_cell, AbstractDateOperation
 # from sheetcake.src.cells.date_cell import edays_cell
 from datetime import date
@@ -29,7 +29,13 @@ b = DateCell(date(2025, 1, 1), name="b")
 c = DateCell(date(2026, 1, 1), name="c")
 d = DateCell(date(2027, 1, 1), name="d")
 e = max_date_cell(cells=[a, b, c, d], name="e")
-print(e)
-print(e.formula())
-print(e.formula(deep=True))
+# print(e)
+# print(e.formula())
+# print(e.formula(deep=True))
 # result = "edays( edays( a, 5 ), 5)"
+# print(int((c - b).days))
+f = CountDaysCell(start_date=b, end_date=c, name="f")
+print(f.value)
+print(f.formula())
+c.value = date(2026, 1, 2)
+print(f.value)
