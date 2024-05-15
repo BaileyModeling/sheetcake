@@ -1,6 +1,6 @@
 from typing import Callable, List
 from .array import Array
-from sheetcake import Cell, DateArray
+from sheetcake import Cell, SumCell, DateArray
 from sheetcake.src.vector import is_scalar, is_vector
 
 
@@ -46,6 +46,21 @@ class TimeSeries(Array):
             raise TypeError(f"Cannot add type {type(self)} and {type(other)}")
         array.name = self.name + " + " + other_name
         return array
+
+    __radd__ = __add__
+
+    @classmethod
+    def sum(cls, series: List["TimeSeries"], name: str = None, tolerance = 0.0, fmt: Callable = str, callback: Callable = None, locked: bool = False, validation_rules: List[Callable] = None) -> "TimeSeries":
+        """
+        Construct a TimeSeries that is the sum of a list of timeseries.
+        """
+        name = name or cls.default_name
+        date_array = series[0].date_array
+        array = []
+        for col in range(len(series[0])):
+            cell = SumCell(cells=[row[col] for row in series], name=f"{name}[{col}]", tolerance=tolerance, fmt=fmt, callback=callback, locked=locked, validation_rules=validation_rules)
+            array.append(cell)
+        return cls(date_array=date_array, array=array, name=name)
 
     @classmethod
     def from_values(cls, date_array: DateArray, values: List, name: str = None, fmt: Callable = str, tolerance = 0.0, callback: Callable = None, locked: bool = False, validation_rules: List[Callable] = None) -> "Array":

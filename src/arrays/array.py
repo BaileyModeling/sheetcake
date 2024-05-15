@@ -129,7 +129,7 @@ class Array:
         return self
 
     @classmethod
-    def sum(cls, arrays: List["Array"], name: str = None, tolerance = 0.0, fmt: Callable = str, callback: Callable = None, locked: bool = False, validation_rules: List[Callable] = None):
+    def sum(cls, arrays: List["Array"], name: str = None, tolerance = 0.0, fmt: Callable = str, callback: Callable = None, locked: bool = False, validation_rules: List[Callable] = None) -> "Array":
         """
         Construct an Array that is the sum of a list of arrays.
         """

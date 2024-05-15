@@ -52,6 +52,14 @@ def test_sum_multiple_cells():
     assert d.value == 12
 
 
+def test_sum_multiple_cells_class_method():
+    a = Cell(3)
+    b = Cell(4)
+    c = Cell(5)
+    d = Cell.sum_cells((a, b, c), name="d")
+    assert d.value == 12
+
+
 def test_sum_array_of_cells():
     a = Cell(9, name="a")
     previous = a

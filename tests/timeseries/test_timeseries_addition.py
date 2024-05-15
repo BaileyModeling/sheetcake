@@ -128,3 +128,18 @@ def test_timeseries_zeros():
     assert a[1] == 0
     assert a[2] == 0
     assert a.total == 0
+
+
+def test_timeseries_sum_class_method():
+    da = DateArray(date(2024, 1, 1), 3)
+    a = TimeSeries.from_values(date_array=da, values=(1, 2, 3), name='a')
+    b = TimeSeries.from_values(date_array=da, values=(10, 20, 30), name='b')
+    c = TimeSeries.from_values(date_array=da, values=(100, 200, 300), name='c')
+    d = TimeSeries.sum((a, b, c), name='d')
+    a.set_value(0, 0)
+    a.set_value(1, 0)
+    a.set_value(2, 0)
+    assert d[0] == 110
+    assert d[1] == 220
+    assert d[2] == 330
+    assert d.total == 660

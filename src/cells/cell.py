@@ -233,6 +233,22 @@ class Cell:
             self.update()
         return self
 
+    @classmethod
+    def sum_cells(cls, cells: List["Cell"], name: str = "<Cell>", tolerance: float = 0, fmt: Callable = str, callback: Callable = None, locked: bool = False, validation_rules: List[Callable] = None) -> "Cell":
+        cell = Cell(None, name=name, tolerance=tolerance, fmt=fmt, callback=callback, locked=locked, validation_rules=validation_rules)
+        for c in cells:
+            cell.add(c, update=False)
+        cell.update()
+        return cell
+
+    @classmethod
+    def mult_cells(cls, cells: List["Cell"], name: str = "<Cell>", tolerance: float = 0, fmt: Callable = str, callback: Callable = None, locked: bool = False, validation_rules: List[Callable] = None) -> "Cell":
+        cell = Cell(None, name=name, tolerance=tolerance, fmt=fmt, callback=callback, locked=locked, validation_rules=validation_rules)
+        for c in cells:
+            cell.mult(c, update=False)
+        cell.update()
+        return cell
+
     def __add__(self, other):
         if hasattr(other, "array"):
             return other + self
@@ -313,13 +329,6 @@ class Cell:
         cell.mult(Cell(-1, name="-1"))
         return cell
 
-    def __eq__(self, other: object) -> bool:
-        if hasattr(other, "value") and self.value == other.value:
-            return True
-        if self.value == other:
-            return True
-        return False
-
     def __round__(self, n=0):
         # TODO: return a cell or just a value?
         return round(self.value, n)
@@ -329,6 +338,31 @@ class Cell:
     def __pow__(self, other):
     def __abs__(self):
     '''
+
+    # def __eq__(self, other: object) -> bool:
+    #     if hasattr(other, "value") and self.value == other.value:
+    #         return True
+    #     if self.value == other:
+    #         return True
+    #     return False
+
+    def __lt__(self, other):
+        return self.value < get_value(other)
+
+    def __le__(self, other):
+        return self.value <= get_value(other)
+
+    def __eq__(self, other):
+        return self.value == get_value(other)
+
+    def __ne__(self, other):
+        return self.value != get_value(other)
+
+    def __gt__(self, other):
+        return self.value > get_value(other)
+
+    def __ge__(self, other):
+        return self.value >= get_value(other)
 
 
 # =============================================================================

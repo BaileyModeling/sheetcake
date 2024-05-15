@@ -78,3 +78,13 @@ def test_negative_cell_updates():
     b = -a
     a.value = 99
     assert b.value == -99
+
+
+def test_mult_cell_class_method():
+    a = Cell(2)
+    b = Cell(5)
+    c = Cell(6)
+    d = Cell.mult_cells([a, b, c], name="mult_cell")
+    assert d.value == 60
+    a.value = 20
+    assert d.value == 600
