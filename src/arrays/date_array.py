@@ -38,6 +38,9 @@ class DateArray:
         self.qtr_and_yr = self.get_qtr_and_yr_list()
         self.qtr_and_yr_indicies = self.get_qtr_and_yr_indicies()
 
+    def __getitem__(self, i):
+        return self.end[i]
+
     @property
     def debug_dict(self) -> dict:
         return self.__dict__

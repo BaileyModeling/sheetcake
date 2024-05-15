@@ -117,3 +117,9 @@ def test_date_array_prorated_days():
     assert days[0] == 31
     assert days[1] == 14
     assert days[2] == 0
+
+
+def test_date_array_getitem():
+    da = DateArray(date(2023,1,1), 12)
+    assert da[0] == date(2023,1,31)
+    assert da[1] == date(2023,2,28)
