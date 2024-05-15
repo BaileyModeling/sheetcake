@@ -1,4 +1,5 @@
 from sheetcake import Array, Cell
+from types import SimpleNamespace
 import pytest
 import numpy as np
 
@@ -136,3 +137,17 @@ def test_cell_division_updating_value_cascades_all_results():
     assert e[1] == 30
     assert e[2] == 1
     assert e.total == 43
+
+
+def test_div_operator_array_simplenamespaces_raises_error():
+    a = Array.from_values(values=(10, 20, 30), name='a')
+    b = SimpleNamespace(value=40, name='b')
+    with pytest.raises(Exception):
+        a / b
+
+
+def test_rdiv_operator_array_simplenamespaces_raises_error():
+    a = Array.from_values(values=(10, 20, 30), name='a')
+    b = SimpleNamespace(value=40, name='b')
+    with pytest.raises(Exception):
+        b / a

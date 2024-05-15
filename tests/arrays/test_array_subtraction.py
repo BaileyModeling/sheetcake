@@ -1,7 +1,8 @@
 from sheetcake import Array, Cell
-import pytest
 from sheetcake.src.arrays.array import is_scalar
+from types import SimpleNamespace
 import numpy as np
+import pytest
 
 
 def test_array_subtraction():
@@ -94,3 +95,17 @@ def test_is_scalar_numpy_element():
 def test_is_scalar_numpy_array():
     a = np.array([1, 2, 3])
     assert not is_scalar(a)
+
+
+def test_sub_operator_array_simplenamespaces_raises_error():
+    a = Array.from_values(values=(10, 20, 30), name='a')
+    b = SimpleNamespace(value=40, name='b')
+    with pytest.raises(Exception):
+        a - b
+
+
+def test_rsub_operator_array_simplenamespaces_raises_error():
+    a = Array.from_values(values=(10, 20, 30), name='a')
+    b = SimpleNamespace(value=40, name='b')
+    with pytest.raises(Exception):
+        b - a

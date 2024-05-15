@@ -1,5 +1,6 @@
 from sheetcake import Array, Cell
 from decimal import Decimal
+from types import SimpleNamespace
 import pytest
 
 
@@ -41,7 +42,7 @@ def test_adding_cell_and_array():
     assert c[2] == 70
 
 
-def test_adding_array_add_method():
+def test_adding_array_add_method_cell():
     a = Array.from_values(values=(10, 20, 30), name='a')
     b = Cell(40, name='b')
     c = a.add(b)
@@ -124,3 +125,17 @@ def test_adding_two_arrays_unequal_len_raises_error():
     b = Array.from_values(values=(40, 50, 60, 70, 80), name='b')
     with pytest.raises(Exception):
         c = a + b
+
+
+def test_adding_array_simplenamespaces_raises_error():
+    a = Array.from_values(values=(10, 20, 30), name='a')
+    b = SimpleNamespace(value=40, name='b')
+    with pytest.raises(Exception):
+        a.add(b)
+
+
+def test_add_operator_array_simplenamespaces_raises_error():
+    a = Array.from_values(values=(10, 20, 30), name='a')
+    b = SimpleNamespace(value=40, name='b')
+    with pytest.raises(Exception):
+        a + b

@@ -4,6 +4,8 @@ import numpy as np
 from sheetcake import Cell, SumCell, MaxCell, MinCell
 from sheetcake.src.utils import is_number, is_iterable
 from sheetcake.src.fmt import comma2
+from sheetcake.src.vector import is_scalar, is_vector
+
 
 class Array:
     default_name = "Array"
@@ -84,11 +86,16 @@ class Array:
         for cell in self.array:
             print(f"{cell.name:<{width}}: {cell.value_audit(deep=deep)}")
 
+    def _is_compatible(self, other) -> bool:
+        return len(self.array) == len(other)
+
     def equal(self, other):
-        if isinstance(other, (Array, np.ndarray, list, tuple)):
+        if is_vector(other):
+            if not self._is_compatible(other):
+                raise TypeError(f"Cannot equal arrays of different length: {len(self.array)}, {len(other)}")
             for i, cell in enumerate(other):
                 self.array[i].equal(cell)
-        elif isinstance(other, (int, float, Decimal, Cell)):
+        elif is_scalar(other):
             for cell in self.array:
                 cell.equal(other)
         else:
@@ -96,10 +103,12 @@ class Array:
         return self
 
     def add(self, other):
-        if isinstance(other, (Array, np.ndarray, list, tuple)):
+        if is_vector(other):
+            if not self._is_compatible(other):
+                raise TypeError(f"Cannot add arrays of different length: {len(self.array)}, {len(other)}")
             for i, cell in enumerate(other):
                 self.array[i].add(cell)
-        elif isinstance(other, (int, float, Decimal, Cell)):
+        elif is_scalar(other):
             for cell in self.array:
                 cell.add(other)
         else:
@@ -107,10 +116,12 @@ class Array:
         return self
 
     def mult(self, other):
-        if isinstance(other, (Array, np.ndarray, list, tuple)):
+        if is_vector(other):
+            if not self._is_compatible(other):
+                raise TypeError(f"Cannot mult arrays of different length: {len(self.array)}, {len(other)}")
             for i, cell in enumerate(other):
                 self.array[i].mult(cell)
-        elif isinstance(other, (int, float, Decimal, Cell)):
+        elif is_scalar(other):
             for cell in self.array:
                 cell.mult(other)
         else:
@@ -270,7 +281,7 @@ class Array:
             for i, cell in enumerate(array):
                 cell.add(other[i])
                 cell.div(self[i])
-        elif isinstance(other, (int, float, Decimal, Cell)):
+        elif is_scalar(other):
             for i, cell in enumerate(array):
                 cell.add(other)
                 cell.div(self[i])
@@ -279,24 +290,3 @@ class Array:
         return array
 
     __rtruediv__ = __rdiv__
-
-
-def is_scalar(value) -> bool:
-    """
-    Return True if the value is a scalar, False otherwise.
-    """
-    # return isinstance(value, (Cell, int, float, Decimal))
-    if isinstance(value, (Cell, int, float, Decimal, np.floating, np.int, np.float, np.complex, )):
-        return True
-    if isinstance(value, np.ndarray):
-        return False
-    if str(type(value)).startswith("<class 'numpy."):
-        return True
-    return False
-
-
-def is_vector(value) -> bool:
-    """
-    Return True if the value is a vector, False otherwise.
-    """
-    return isinstance(value, (Array, np.ndarray, list, tuple))

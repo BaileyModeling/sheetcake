@@ -1,4 +1,5 @@
 from sheetcake import Array, Cell
+from types import SimpleNamespace
 import pytest
 
 
@@ -110,3 +111,17 @@ def test_cell_multiplication_updating_value_cascades_all_results():
     assert e[1] == 100
     assert e[2] == 180
     assert e.total == 640
+
+
+def test_multiplying_array_simplenamespaces_raises_error():
+    a = Array.from_values(values=(10, 20, 30), name='a')
+    b = SimpleNamespace(value=40, name='b')
+    with pytest.raises(Exception):
+        a.mult(b)
+
+
+def test_mult_operator_array_simplenamespaces_raises_error():
+    a = Array.from_values(values=(10, 20, 30), name='a')
+    b = SimpleNamespace(value=40, name='b')
+    with pytest.raises(Exception):
+        a * b

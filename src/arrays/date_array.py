@@ -40,6 +40,9 @@ class DateArray:
 
     def __getitem__(self, i):
         return self.end[i]
+    
+    def __repr__(self) -> str:
+        return f"DateArray(start_date={self.start_date}, duration={self.duration})"
 
     @property
     def debug_dict(self) -> dict:

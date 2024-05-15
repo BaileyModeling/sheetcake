@@ -18,3 +18,4 @@ from sheetcake.src.arrays.ending_balance import EndingBalance
 from sheetcake.src.arrays.beginning_balance import BeginningBalance
 from sheetcake.src.arrays.date_array import DateArray
 from sheetcake.src.arrays.array_sum import ArraySum
+from sheetcake.src.arrays.timeseries import TimeSeries
