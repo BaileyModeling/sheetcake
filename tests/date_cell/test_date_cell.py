@@ -459,3 +459,13 @@ def test_object_subtract_date_cell():
     b = SimpleNamespace(value=date(2024, 2, 1))
     result = b - a
     assert result.days == 31
+
+
+def test_date_cell_year():
+    a = DateCell(date(2024, 1, 1), "a")
+    assert a.year == 2024
+
+
+def test_date_cell_month():
+    a = DateCell(date(2024, 1, 1), "a")
+    assert a.month == 1

@@ -56,6 +56,14 @@ class DateCell:
             return None
         self.equal(value)
 
+    @property
+    def year(self):
+        return self._value.year
+    
+    @property
+    def month(self):
+        return self._value.month
+
     def print(self, width: int = 15):
         result = f'{self.name:<{width}}: {self.fmt(self._value)}'
         print(result)

@@ -2,6 +2,7 @@ from sheetcake.src import errors
 from sheetcake.src import validation_rules
 from sheetcake.src import fmt
 from sheetcake.src import dates
+from sheetcake.src import utils
 from sheetcake.src.signal import Signal
 from sheetcake.src.cells.cell import Cell
 from sheetcake.src.cells.max_cell import MaxCell
