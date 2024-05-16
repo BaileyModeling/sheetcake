@@ -20,7 +20,7 @@ def test_cell_unlock():
 def test_cell_lock_with_formula():
     a = Cell(5)
     b = Cell()
-    b.equal(a)
+    b.equal_cell(a)
     assert b.value == 5
     b.lock()
     a.value = 100

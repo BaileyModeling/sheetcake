@@ -125,7 +125,7 @@ def test_cell_value_updates():
 def test_cell_equal_formula():
     a = Cell(5)
     b = Cell()
-    b.equal(a)
+    b.equal_cell(a)
     assert b.value == 5
     a.value = 100
     assert b.value == 100
@@ -139,7 +139,7 @@ def test_cell_init_with_another_cell_sets_value():
 
 def test_cell_equal_number():
     a = Cell()
-    a.equal(5)
+    a.equal_cell(5)
     assert a.value == 5
 
 
@@ -170,7 +170,7 @@ def test_cell_equal_override():
     b = Cell(10, "b")
     c = Cell(None, "c").sum(a, b)
     d = Cell(99, "d")
-    c.equal(d)
+    c.equal_cell(d)
     assert c.value == 99
 
 

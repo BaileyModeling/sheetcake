@@ -4,8 +4,8 @@ import pytest
 
 def test_cell_integer_floor_division():
     a = Cell()
-    a.equal(9)
-    a.floordiv(2)
+    a.equal_cell(9)
+    a.floordiv_cell(2)
     assert a.value == 4
 
 
@@ -13,8 +13,8 @@ def test_cell_division():
     a = Cell(9)
     b = Cell(2)
     c = Cell()
-    c.add(a)
-    c.floordiv(b)
+    c.add_cell(a)
+    c.floordiv_cell(b)
     assert c.value == 4
 
 
@@ -22,8 +22,8 @@ def test_cell_floor_division_updates():
     a = Cell(9)
     b = Cell(3)
     c = Cell()
-    c.add(a)
-    c.floordiv(b)
+    c.add_cell(a)
+    c.floordiv_cell(b)
     a.value = 10
     assert c.value == 3
     a.value = 12
@@ -34,8 +34,8 @@ def test_cell_floor_division_denominator_updates():
     a = Cell(9)
     b = Cell(3)
     c = Cell()
-    c.add(a)
-    c.floordiv(b)
+    c.add_cell(a)
+    c.floordiv_cell(b)
     b.value = 4
     assert c.value == 2
 
@@ -50,7 +50,7 @@ def test_cell_floor_division_operator():
 def test_floor_division_zero_cell_by_int_one():
     a = Cell(0)
     # c = a // 1
-    c = Cell(a).floordiv(1)
+    c = Cell(a).floordiv_cell(1)
     assert c.value == 0
 
 

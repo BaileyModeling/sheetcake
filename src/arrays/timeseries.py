@@ -35,13 +35,13 @@ class TimeSeries(Array):
                 raise ValueError(f"Cannot add timeseries of different length: {len(self)}, {len(other)}")
             other_name = other.name
             for i, cell in enumerate(array):
-                cell.add(self[i])
-                cell.add(other[i])
+                cell.add_cell(self[i])
+                cell.add_cell(other[i])
         elif is_scalar(other):
             other_name = str(other)
             for i, cell in enumerate(array):
-                cell.add(self[i])
-                cell.add(other)
+                cell.add_cell(self[i])
+                cell.add_cell(other)
         else:
             raise TypeError(f"Cannot add type {type(self)} and {type(other)}")
         array.name = self.name + " + " + other_name

@@ -53,7 +53,7 @@ class Array:
 
     def append(self, cell: Cell):
         self.array.append(cell)
-        self.total.add(cell)
+        self.total.add_cell(cell)
 
     def set_value(self, i, value):
         self.array[i].value = value
@@ -94,10 +94,10 @@ class Array:
             if not self._is_compatible(other):
                 raise TypeError(f"Cannot equal arrays of different length: {len(self.array)}, {len(other)}")
             for i, cell in enumerate(other):
-                self.array[i].equal(cell)
+                self.array[i].equal_cell(cell)
         elif is_scalar(other):
             for cell in self.array:
-                cell.equal(other)
+                cell.equal_cell(other)
         else:
             raise TypeError(f"Cannot equal type {type(self)} and {type(other)}")
         return self
@@ -107,10 +107,10 @@ class Array:
             if not self._is_compatible(other):
                 raise TypeError(f"Cannot add arrays of different length: {len(self.array)}, {len(other)}")
             for i, cell in enumerate(other):
-                self.array[i].add(cell)
+                self.array[i].add_cell(cell)
         elif is_scalar(other):
             for cell in self.array:
-                cell.add(other)
+                cell.add_cell(other)
         else:
             raise TypeError(f"Cannot add type {type(self)} and {type(other)}")
         return self
@@ -120,10 +120,10 @@ class Array:
             if not self._is_compatible(other):
                 raise TypeError(f"Cannot mult arrays of different length: {len(self.array)}, {len(other)}")
             for i, cell in enumerate(other):
-                self.array[i].mult(cell)
+                self.array[i].mult_cell(cell)
         elif is_scalar(other):
             for cell in self.array:
-                cell.mult(other)
+                cell.mult_cell(other)
         else:
             raise TypeError(f"Cannot mult type {type(self)} and {type(other)}")
         return self
@@ -188,13 +188,13 @@ class Array:
                 raise ValueError(f"Cannot add arrays of different length: {len(self)}, {len(other)}")
             other_name = other.name
             for i, cell in enumerate(array):
-                cell.add(self[i])
-                cell.add(other[i])
+                cell.add_cell(self[i])
+                cell.add_cell(other[i])
         elif is_scalar(other):
             other_name = str(other)
             for i, cell in enumerate(array):
-                cell.add(self[i])
-                cell.add(other)
+                cell.add_cell(self[i])
+                cell.add_cell(other)
         else:
             raise TypeError(f"Cannot add type {type(self)} and {type(other)}")
         array.name = self.name + " + " + other_name
@@ -208,12 +208,12 @@ class Array:
             if not len(self) == len(other):
                 raise ValueError(f"Cannot add arrays of different length: {len(self)}, {len(other)}")
             for i, cell in enumerate(array):
-                cell.add(self[i])
-                cell.sub(other[i])
+                cell.add_cell(self[i])
+                cell.sub_cell(other[i])
         elif is_scalar(other):
             for i, cell in enumerate(array):
-                cell.add(self[i])
-                cell.sub(other)
+                cell.add_cell(self[i])
+                cell.sub_cell(other)
         else:
             raise TypeError(f"Cannot subtract type {type(self)} and {type(other)}")
         return array
@@ -224,12 +224,12 @@ class Array:
             if not len(self) == len(other):
                 raise ValueError(f"Cannot add arrays of different length: {len(self)}, {len(other)}")
             for i, cell in enumerate(array):
-                cell.add(other[i])
-                cell.sub(self[i])
+                cell.add_cell(other[i])
+                cell.sub_cell(self[i])
         elif is_scalar(other):
             for i, cell in enumerate(array):
-                cell.add(other)
-                cell.sub(self[i])
+                cell.add_cell(other)
+                cell.sub_cell(self[i])
         else:
             raise TypeError(f"Cannot subtract type {type(self)} and {type(other)}")
         return array
@@ -243,12 +243,12 @@ class Array:
             if not len(self) == len(other):
                 raise ValueError(f"Cannot add arrays of different length: {len(self)}, {len(other)}")
             for i, cell in enumerate(array):
-                cell.add(self[i])
-                cell.mult(other[i])
+                cell.add_cell(self[i])
+                cell.mult_cell(other[i])
         elif is_scalar(other):
             for i, cell in enumerate(array):
-                cell.add(self[i])
-                cell.mult(other)
+                cell.add_cell(self[i])
+                cell.mult_cell(other)
         else:
             raise TypeError(f"Cannot multiply type {type(self)} and {type(other)}")
         return array
@@ -261,12 +261,12 @@ class Array:
             if not len(self) == len(other):
                 raise ValueError(f"Cannot add arrays of different length: {len(self)}, {len(other)}")
             for i, cell in enumerate(array):
-                cell.add(self[i])
-                cell.div(other[i])
+                cell.add_cell(self[i])
+                cell.div_cell(other[i])
         elif is_scalar(other):
             for i, cell in enumerate(array):
-                cell.add(self[i])
-                cell.div(other)
+                cell.add_cell(self[i])
+                cell.div_cell(other)
         else:
             raise TypeError(f"Cannot divide type {type(self)} and {type(other)}")
         return array
@@ -279,12 +279,12 @@ class Array:
             if not len(self) == len(other):
                 raise ValueError(f"Cannot add arrays of different length: {len(self)}, {len(other)}")
             for i, cell in enumerate(array):
-                cell.add(other[i])
-                cell.div(self[i])
+                cell.add_cell(other[i])
+                cell.div_cell(self[i])
         elif is_scalar(other):
             for i, cell in enumerate(array):
-                cell.add(other)
-                cell.div(self[i])
+                cell.add_cell(other)
+                cell.div_cell(self[i])
         else:
             raise TypeError(f"Cannot divide type {type(self)} and {type(other)}")
         return array

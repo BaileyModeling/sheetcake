@@ -3,9 +3,9 @@ from sheetcake import Cell
 
 def test_cell_integer_multiplication():
     a = Cell()
-    a.equal(5)
+    a.equal_cell(5)
     assert a.value == 5
-    a.mult(3)
+    a.mult_cell(3)
     assert a.value == 15
 
 
@@ -13,16 +13,16 @@ def test_cell_multiplication():
     a = Cell(3)
     b = Cell(4)
     c = Cell()
-    c.mult(a)
-    c.mult(b)
+    c.mult_cell(a)
+    c.mult_cell(b)
     assert c.value == 12
 
 
 def test_cell_distributive_property():
     a = Cell()
-    a.add(3)
-    a.add(4)
-    a.mult(2)
+    a.add_cell(3)
+    a.add_cell(4)
+    a.mult_cell(2)
     assert a.value == 14
 
 

@@ -4,17 +4,17 @@ from decimal import Decimal
 
 def test_blank_cell_integer_addition():
     a = Cell()
-    a.add(5)
+    a.add_cell(5)
     assert a.value == 5
-    a.add(3)
+    a.add_cell(3)
     assert a.value == 8
 
 
 def test_cell_integer_addition():
     a = Cell()
-    a.equal(5)
+    a.equal_cell(5)
     assert a.value == 5
-    a.add(3)
+    a.add_cell(3)
     assert a.value == 8
 
 
@@ -29,8 +29,8 @@ def test_cell_addition():
     a = Cell(3)
     b = Cell(4)
     c = Cell()
-    c.add(a)
-    c.add(b)
+    c.add_cell(a)
+    c.add_cell(b)
     assert c.value == 7
 
 
@@ -38,8 +38,8 @@ def test_cell_addition_updates():
     a = Cell(3)
     b = Cell(4)
     c = Cell()
-    c.add(a)
-    c.add(b)
+    c.add_cell(a)
+    c.add_cell(b)
     b.value = 5
     assert c.value == 8
 
