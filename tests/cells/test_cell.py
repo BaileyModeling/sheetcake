@@ -35,7 +35,7 @@ def test_cell_callback():
     a = Cell(1, "a")
     b = Cell(2, "b")
     c = Cell(None, "c", callback=test_object.callback)
-    c.sum(a, b)
+    c.sum_cell(a, b)
     a.value = 10
     assert test_object.variable == 12
 
@@ -168,7 +168,7 @@ def test_cell_equal_override():
     """
     a = Cell(5, "a")
     b = Cell(10, "b")
-    c = Cell(None, "c").sum(a, b)
+    c = Cell(None, "c").sum_cell(a, b)
     d = Cell(99, "d")
     c.equal_cell(d)
     assert c.value == 99

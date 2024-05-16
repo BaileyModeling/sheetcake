@@ -187,7 +187,7 @@ class Cell:
             self.update()
         return self
 
-    def sum(self, *args):
+    def sum_cell(self, *args):
         for arg in args:
             self.add_cell(arg, update=False)
         self.update()
