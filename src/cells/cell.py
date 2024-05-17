@@ -249,6 +249,12 @@ class Cell:
         cell.update()
         return cell
 
+    @classmethod
+    def div(cls, dividend: "Cell", divisor: "Cell", name: str = "<Cell>", tolerance: float = 0, fmt: Callable = str, callback: Callable = None, locked: bool = False, validation_rules: List[Callable] = None) -> "Cell":
+        cell = Cell(dividend, name=name, tolerance=tolerance, fmt=fmt, callback=callback, locked=locked, validation_rules=validation_rules)
+        cell.div_item(divisor)
+        return cell
+
     def __add__(self, other):
         if hasattr(other, "array"):
             return other + self

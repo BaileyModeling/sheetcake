@@ -30,6 +30,15 @@ def test_cell_division_updates():
     assert c.value == 4
 
 
+def test_cell_division_classmethod():
+    a = Cell(10)
+    b = Cell(3)
+    c = Cell.div(a, b)
+    a.value = 8
+    b.value = 2
+    assert c.value == 4
+
+
 def test_cell_division_operator():
     a = Cell(8)
     b = Cell(2)
