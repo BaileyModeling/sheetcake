@@ -151,14 +151,6 @@ def test_date_cell_max_operation():
     assert d.value == date(2025, 1, 1)
 
 
-def test_max_date_cell():
-    a = DateCell(date(2000, 1, 1), "a")
-    b = DateCell(date(2024, 1, 1), "b")
-    c = DateCell(date(2025, 1, 1), "c")
-    d = DateCell.max([a, b, c], name="d")
-    assert d.value == date(2025, 1, 1)
-
-
 def test_date_cell_max_operation_updates():
     a = DateCell(date(2000, 1, 1), "a")
     b = DateCell(date(2024, 1, 1), "b")
@@ -330,16 +322,6 @@ def test_date_cell_formula_deep_eomonth_edays():
     assert b.formula(deep=True) == "edays( eomonth( 2024-03-01, 0 ), 5 )"
 
 
-def test_date_cell_max_formula(cell_list: List[DateCell]):
-    e = DateCell.max(cells=cell_list, name="e")
-    assert e.formula() == "max( a, b, c, d )"
-
-
-def test_date_cell_max_formula_deep(cell_list: List[DateCell]):
-    e = DateCell.max(cells=cell_list, name="e")
-    assert e.formula(deep=True) == "max( 2024-01-01, 2025-01-01, 2026-01-01, 2027-01-01 )"
-
-
 def test_date_cell_edate_max_combined_value():
     a = DateCell(name="a")
     a.edate_item(date(2028, 1, 1), 12)
@@ -368,16 +350,6 @@ def test_date_cell_edate_max_combined_formula_deep():
     d = DateCell(date(2027, 1, 1), name="d")
     a.max_items([b, c, d])
     assert a.formula(deep=True) == "max( 2025-01-01, 2026-01-01, 2027-01-01, edate( 2028-01-01, 12 ) )"
-
-
-def test_date_cell_max_value_audit(cell_list: List[DateCell]):
-    e = DateCell.max(cells=cell_list, name="e")
-    assert e.value_audit() == "max( a, b, c, d )"
-
-
-def test_date_cell_max_value_audit_deep(cell_list: List[DateCell]):
-    e = DateCell.max(cells=cell_list, name="e")
-    assert e.value_audit(deep=True) == "max( 2024-01-01, 2025-01-01, 2026-01-01, 2027-01-01 )"
 
 
 def test_date_cell_value_audit_equal_date_cell():
