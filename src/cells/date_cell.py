@@ -141,7 +141,7 @@ class DateCell:
             self.update()
         return self
 
-    def edays(self, cell: "DateCell", num_days: int, update: bool = True):
+    def edays_item(self, cell: "DateCell", num_days: int, update: bool = True):
         if hasattr(cell, 'changed'):
             cell.changed.connect(self.update)
         if hasattr(num_days, 'changed'):
@@ -152,7 +152,7 @@ class DateCell:
             self.update()
         return self
 
-    def edate(self, cell: "DateCell", num_months: int, update: bool = True):
+    def edate_item(self, cell: "DateCell", num_months: int, update: bool = True):
         if hasattr(cell, 'changed'):
             cell.changed.connect(self.update)
         if hasattr(num_months, 'changed'):
@@ -163,7 +163,7 @@ class DateCell:
             self.update()
         return self
 
-    def eomonth(self, cell: "DateCell", num_months: int = 0, update: bool = True):
+    def eomonth_item(self, cell: "DateCell", num_months: int = 0, update: bool = True):
         if hasattr(cell, 'changed'):
             cell.changed.connect(self.update)
         if hasattr(num_months, 'changed'):
@@ -174,7 +174,7 @@ class DateCell:
             self.update()
         return self
 
-    def max(self, cells: List["DateCell"], update: bool = True):
+    def max_items(self, cells: List["DateCell"], update: bool = True):
         for cell in cells:
             if hasattr(cell, 'changed'):
                 cell.changed.connect(self.update)
@@ -185,7 +185,7 @@ class DateCell:
             self.update()
         return self
 
-    def min(self, cells: List["DateCell"], update: bool = True):
+    def min_items(self, cells: List["DateCell"], update: bool = True):
         for cell in cells:
             if hasattr(cell, 'changed'):
                 cell.changed.connect(self.update)
@@ -245,7 +245,7 @@ def edays_cell(
     validation_rules: List[Callable] = None
 ) -> DateCell:
     new_cell = DateCell(value=None, name=name, fmt=fmt, callback=callback, locked=locked, validation_rules=validation_rules)
-    new_cell.edays(cell=date_cell, num_days=num_days, update=True)
+    new_cell.edays_item(cell=date_cell, num_days=num_days, update=True)
     return new_cell
 
 
@@ -259,7 +259,7 @@ def edate_cell(
     validation_rules: List[Callable] = None
 ) -> DateCell:
     new_cell = DateCell(value=None, name=name, fmt=fmt, callback=callback, locked=locked, validation_rules=validation_rules)
-    new_cell.edate(cell=date_cell, num_months=num_months, update=True)
+    new_cell.edate_item(cell=date_cell, num_months=num_months, update=True)
     return new_cell
 
 
@@ -273,7 +273,7 @@ def eomonth_cell(
     validation_rules: List[Callable] = None
 ) -> DateCell:
     new_cell = DateCell(value=None, name=name, fmt=fmt, callback=callback, locked=locked, validation_rules=validation_rules)
-    new_cell.eomonth(cell=date_cell, num_months=num_months, update=True)
+    new_cell.eomonth_item(cell=date_cell, num_months=num_months, update=True)
     return new_cell
 
 
@@ -286,7 +286,7 @@ def max_date_cell(
     validation_rules: List[Callable] = None
 ) -> DateCell:
     new_cell = DateCell(value=None, name=name, fmt=fmt, callback=callback, locked=locked, validation_rules=validation_rules)
-    new_cell.max(cells=cells, update=True)
+    new_cell.max_items(cells=cells, update=True)
     return new_cell
 
 
@@ -299,7 +299,7 @@ def min_date_cell(
     validation_rules: List[Callable] = None
 ) -> DateCell:
     new_cell = DateCell(value=None, name=name, fmt=fmt, callback=callback, locked=locked, validation_rules=validation_rules)
-    new_cell.min(cells=cells, update=True)
+    new_cell.min_items(cells=cells, update=True)
     return new_cell
 
 
