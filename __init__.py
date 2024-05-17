@@ -9,7 +9,7 @@ from sheetcake.src.cells.max_cell import MaxCell
 from sheetcake.src.cells.min_cell import MinCell
 from sheetcake.src.cells.sum_cell import SumCell
 from sheetcake.src.cells.round_cell import RoundCell
-from sheetcake.src.cells.date_cell import DateCell, edate_cell, edays_cell, eomonth_cell, max_date_cell, min_date_cell
+from sheetcake.src.cells.date_cell import DateCell, edate_cell, eomonth_cell, max_date_cell, min_date_cell
 from sheetcake.src.cells.count_days_cell import CountDaysCell
 from sheetcake.src.rows.row import Row
 from sheetcake.src.rows.date_row import DateRow

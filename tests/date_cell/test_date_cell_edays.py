@@ -1,5 +1,4 @@
 from sheetcake import DateCell, errors, validation_rules, Cell
-from sheetcake.src.cells.date_cell import edays_cell, edate_cell, eomonth_cell, max_date_cell, min_date_cell, AbstractDateOperation
 from datetime import date
 import pytest
 from typing import List
@@ -23,7 +22,7 @@ def test_date_cell_edays_operation_consecutive():
 
 def test_edays_cell():
     a = DateCell(date(2024, 3, 1), "a")
-    b = edays_cell(a, 5, name="b")
+    b = DateCell.edays(a, 5, name="b")
     a.value = date(2024, 12, 1)
     assert b.value == date(2024, 12, 6)
 
@@ -31,7 +30,7 @@ def test_edays_cell():
 def test_edays_cell_dynamic_days():
     a = DateCell(date(2024, 3, 1), "a")
     days = Cell(5)
-    b = edays_cell(a, days, name="b")
+    b = DateCell.edays(a, days, name="b")
     a.value = date(2024, 12, 1)
     assert b.value == date(2024, 12, 6)
 
@@ -39,7 +38,7 @@ def test_edays_cell_dynamic_days():
 def test_edays_cell_dynamic_days_updates():
     a = DateCell(date(2024, 3, 1), "a")
     days = Cell(5)
-    b = edays_cell(a, days, name="b")
+    b = DateCell.edays(a, days, name="b")
     a.value = date(2024, 12, 1)
     days.value = 6
     assert b.value == date(2024, 12, 7)

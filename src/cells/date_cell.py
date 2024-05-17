@@ -1,7 +1,7 @@
 from copy import copy
 from typing import Callable, List, Tuple, Union
 from datetime import date, datetime
-from sheetcake import Signal, fmt, dates, errors
+from sheetcake import Signal, fmt, dates, errors, Cell
 
 
 class DateCell:
@@ -226,6 +226,21 @@ class DateCell:
         if hasattr(other, "value"):
             return other.value - self.value
         return other - self.value
+    
+    @classmethod
+    def edays(
+        cls,
+        date_cell: "DateCell",
+        num_days: Cell,
+        name: str = "<DateCell>",
+        fmt: Callable = fmt.mmddyyyy,
+        callback: Callable = None,
+        locked: bool = False,
+        validation_rules: List[Callable] = None
+    ) -> "DateCell":
+        new_cell = cls(value=None, name=name, fmt=fmt, callback=callback, locked=locked, validation_rules=validation_rules)
+        new_cell.edays_item(cell=date_cell, num_days=num_days, update=True)
+        return new_cell
 
 
 def get_value(obj) -> date:
@@ -233,20 +248,6 @@ def get_value(obj) -> date:
         return obj.value
     else:
         return obj
-
-
-def edays_cell(
-    date_cell: DateCell,
-    num_days: int,
-    name: str = "<DateCell>",
-    fmt: Callable = fmt.mmddyyyy,
-    callback: Callable = None,
-    locked: bool = False,
-    validation_rules: List[Callable] = None
-) -> DateCell:
-    new_cell = DateCell(value=None, name=name, fmt=fmt, callback=callback, locked=locked, validation_rules=validation_rules)
-    new_cell.edays_item(cell=date_cell, num_days=num_days, update=True)
-    return new_cell
 
 
 def edate_cell(
