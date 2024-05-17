@@ -5,8 +5,8 @@ import pytest
 
 def test_cell_integer_division():
     a = Cell()
-    a.equal_cell(8)
-    a.div_cell(2)
+    a.equal_item(8)
+    a.div_item(2)
     assert a.value == 4
 
 
@@ -14,8 +14,8 @@ def test_cell_division():
     a = Cell(8)
     b = Cell(2)
     c = Cell()
-    c.add_cell(a)
-    c.div_cell(b)
+    c.add_item(a)
+    c.div_item(b)
     assert c.value == 4
 
 
@@ -23,8 +23,8 @@ def test_cell_division_updates():
     a = Cell(10)
     b = Cell(3)
     c = Cell()
-    c.add_cell(a)
-    c.div_cell(b)
+    c.add_item(a)
+    c.div_item(b)
     a.value = 8
     b.value = 2
     assert c.value == 4
@@ -40,7 +40,7 @@ def test_cell_division_operator():
 def test_division_zero_cell_by_int_one():
     a = Cell(0)
     # c = a / 1
-    c = Cell(a).div_cell(1)
+    c = Cell(a).div_item(1)
     assert c.value == 0
 
 
@@ -49,7 +49,7 @@ def test_division_by_zero_raises_exception():
     one = Cell(1)
     with pytest.raises(Exception) as e_info:
         # c = one / zero
-        c = Cell(one).div_cell(zero)
+        c = Cell(one).div_item(zero)
 
 
 def test_division_by_empty_cell_returns_None():

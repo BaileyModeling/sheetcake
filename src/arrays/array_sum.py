@@ -40,7 +40,7 @@ class ArraySum(Array):
         #         self.total.add(cell)
         self.arrays.append(other)
         for i, cell in enumerate(other):
-            self.array[i].add_cell(cell)
+            self.array[i].add_item(cell)
             # self.total.add(cell)
         # return super().add(other)
 

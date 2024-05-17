@@ -15,7 +15,7 @@ class BeginningBalance(Array):
             raise ValueError(f"Beginning Balance Array length does not match Ending Balance Array length: {self.duration} vs. {len(ebal_array)}")
         for i, cell in enumerate(ebal_array):
             if i < self.duration - 1:
-                self[i+1].equal_cell(cell)
+                self[i+1].equal_item(cell)
 
     def append(self, cell: Cell):
         self.array.append(cell)

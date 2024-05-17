@@ -3,16 +3,16 @@ from sheetcake import Cell
 
 def test_blank_cell_integer_subtraction():
     a = Cell()
-    a.sub_cell(5)
+    a.sub_item(5)
     assert a.value == -5
-    a.sub_cell(3)
+    a.sub_item(3)
     assert a.value == -8
 
 
 def test_cell_integer_subtraction():
     a = Cell()
-    a.equal_cell(8)
-    a.sub_cell(3)
+    a.equal_item(8)
+    a.sub_item(3)
     assert a.value == 5
 
 
@@ -20,8 +20,8 @@ def test_cell_subtraction():
     a = Cell(8)
     b = Cell(3)
     c = Cell()
-    c.add_cell(a)
-    c.sub_cell(b)
+    c.add_item(a)
+    c.sub_item(b)
     assert c.value == 5
 
 
@@ -29,8 +29,8 @@ def test_cell_subtraction_updates():
     a = Cell(10)
     b = Cell(3)
     c = Cell()
-    c.add_cell(a)
-    c.sub_cell(b)
+    c.add_item(a)
+    c.sub_item(b)
     a.value = 8
     assert c.value == 5
 

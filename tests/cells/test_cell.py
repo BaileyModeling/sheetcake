@@ -35,7 +35,7 @@ def test_cell_callback():
     a = Cell(1, "a")
     b = Cell(2, "b")
     c = Cell(None, "c", callback=test_object.callback)
-    c.sum_cell(a, b)
+    c.sum_items(a, b)
     a.value = 10
     assert test_object.variable == 12
 
@@ -125,7 +125,7 @@ def test_cell_value_updates():
 def test_cell_equal_formula():
     a = Cell(5)
     b = Cell()
-    b.equal_cell(a)
+    b.equal_item(a)
     assert b.value == 5
     a.value = 100
     assert b.value == 100
@@ -139,7 +139,7 @@ def test_cell_init_with_another_cell_sets_value():
 
 def test_cell_equal_number():
     a = Cell()
-    a.equal_cell(5)
+    a.equal_item(5)
     assert a.value == 5
 
 
@@ -168,9 +168,9 @@ def test_cell_equal_override():
     """
     a = Cell(5, "a")
     b = Cell(10, "b")
-    c = Cell(None, "c").sum_cell(a, b)
+    c = Cell(None, "c").sum_items(a, b)
     d = Cell(99, "d")
-    c.equal_cell(d)
+    c.equal_item(d)
     assert c.value == 99
 
 

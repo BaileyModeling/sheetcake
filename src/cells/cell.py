@@ -33,9 +33,9 @@ class Cell:
 
         if isinstance(value, Cell):
             self._value = value.value
-            self.equal_cell(value)
+            self.equal_item(value)
         elif value is not None:
-            self.equal_cell(value)
+            self.equal_item(value)
 
         self.validate()
 
@@ -103,7 +103,7 @@ class Cell:
         if self.locked:
             print(f"Cannot change value of locked cell {self.name} to {value}")
             return None
-        self.equal_cell(value)
+        self.equal_item(value)
 
     def calculate(self):
         """
@@ -171,7 +171,7 @@ class Cell:
         self.value = value
         self.locked = True
 
-    def equal_cell(self, cell: "Cell", update: bool = True):
+    def equal_item(self, cell: "Cell", update: bool = True):
         if hasattr(cell, 'changed'):
             cell.changed.connect(self.update)
         self.operations = [("=", cell)]  # override any previous operations
@@ -179,7 +179,7 @@ class Cell:
             self.update()
         return self
 
-    def add_cell(self, cell: "Cell", update: bool = True):
+    def add_item(self, cell: "Cell", update: bool = True):
         if hasattr(cell, 'changed'):
             cell.changed.connect(self.update)
         self.operations.append(("+", cell))
@@ -187,13 +187,13 @@ class Cell:
             self.update()
         return self
 
-    def sum_cell(self, *args):
+    def sum_items(self, *args):
         for arg in args:
-            self.add_cell(arg, update=False)
+            self.add_item(arg, update=False)
         self.update()
         return self
 
-    def sub_cell(self, cell: "Cell", update: bool = True):
+    def sub_item(self, cell: "Cell", update: bool = True):
         if hasattr(cell, 'changed'):
             cell.changed.connect(self.update)
         self.operations.append(("-", cell))
@@ -201,7 +201,7 @@ class Cell:
             self.update()
         return self
 
-    def mult_cell(self, cell: "Cell", update: bool = True):
+    def mult_item(self, cell: "Cell", update: bool = True):
         if hasattr(cell, 'changed'):
             cell.changed.connect(self.update)
         self.operations.append(("*", cell))
@@ -209,7 +209,7 @@ class Cell:
             self.update()
         return self
 
-    def div_cell(self, cell: "Cell", update: bool = True):
+    def div_item(self, cell: "Cell", update: bool = True):
         if hasattr(cell, 'changed'):
             cell.changed.connect(self.update)
         self.operations.append(("/", cell))
@@ -217,7 +217,7 @@ class Cell:
             self.update()
         return self
     
-    def floordiv_cell(self, cell: "Cell", update: bool = True):
+    def floordiv_item(self, cell: "Cell", update: bool = True):
         if hasattr(cell, 'changed'):
             cell.changed.connect(self.update)
         self.operations.append(("//", cell))
@@ -225,7 +225,7 @@ class Cell:
             self.update()
         return self
     
-    def exp_cell(self, cell: "Cell", update: bool = True):
+    def exp_item(self, cell: "Cell", update: bool = True):
         if hasattr(cell, 'changed'):
             cell.changed.connect(self.update)
         self.operations.append(("^", cell))
@@ -237,7 +237,7 @@ class Cell:
     def sum(cls, cells: List["Cell"], name: str = "<Cell>", tolerance: float = 0, fmt: Callable = str, callback: Callable = None, locked: bool = False, validation_rules: List[Callable] = None) -> "Cell":
         cell = Cell(None, name=name, tolerance=tolerance, fmt=fmt, callback=callback, locked=locked, validation_rules=validation_rules)
         for c in cells:
-            cell.add_cell(c, update=False)
+            cell.add_item(c, update=False)
         cell.update()
         return cell
 
@@ -245,7 +245,7 @@ class Cell:
     def mult(cls, cells: List["Cell"], name: str = "<Cell>", tolerance: float = 0, fmt: Callable = str, callback: Callable = None, locked: bool = False, validation_rules: List[Callable] = None) -> "Cell":
         cell = Cell(None, name=name, tolerance=tolerance, fmt=fmt, callback=callback, locked=locked, validation_rules=validation_rules)
         for c in cells:
-            cell.mult_cell(c, update=False)
+            cell.mult_item(c, update=False)
         cell.update()
         return cell
 
@@ -253,8 +253,8 @@ class Cell:
         if hasattr(other, "array"):
             return other + self
         cell = Cell()
-        cell.equal_cell(self)
-        cell.add_cell(other)
+        cell.equal_item(self)
+        cell.add_item(other)
         return cell
 
     def __radd__(self, other):
@@ -267,22 +267,22 @@ class Cell:
         if hasattr(other, "array"):
             return -other + self
         cell = Cell()
-        cell.equal_cell(self)
-        cell.sub_cell(other)
+        cell.equal_item(self)
+        cell.sub_item(other)
         return cell
 
     def __rsub__(self, other):
         cell = Cell()
-        cell.equal_cell(other)
-        cell.sub_cell(self)
+        cell.equal_item(other)
+        cell.sub_item(self)
         return cell
 
     def __mul__(self, other):
         if hasattr(other, "array"):
             return other * self
         cell = Cell()
-        cell.equal_cell(self)
-        cell.mult_cell(other)
+        cell.equal_item(self)
+        cell.mult_item(other)
         return cell
 
     __rmul__ = __mul__
@@ -291,14 +291,14 @@ class Cell:
         if hasattr(other, "array"):
             return (1 / other) * self
         cell = Cell()
-        cell.equal_cell(self)
-        cell.div_cell(other)
+        cell.equal_item(self)
+        cell.div_item(other)
         return cell
 
     def __rdiv__(self, other):
         cell = Cell()
-        cell.equal_cell(other)
-        cell.div_cell(self)
+        cell.equal_item(other)
+        cell.div_item(self)
         return cell
 
     __truediv__ = __div__
@@ -308,25 +308,25 @@ class Cell:
         # if hasattr(other, "array"):
         #     return (1 // other) * self
         cell = Cell()
-        cell.equal_cell(self)
-        cell.floordiv_cell(other)
+        cell.equal_item(self)
+        cell.floordiv_item(other)
         return cell
     
     def __rfloordiv__(self, other):
         cell = Cell()
-        cell.equal_cell(other)
-        cell.floordiv_cell(self)
+        cell.equal_item(other)
+        cell.floordiv_item(self)
         return cell
     
     def __pow__(self, other):
         cell = Cell()
-        cell.equal_cell(self)
-        cell.exp_cell(other)
+        cell.equal_item(self)
+        cell.exp_item(other)
         return cell
 
     def __neg__(self):
         cell = Cell(self, f"-{self.name}", fmt=self.fmt)
-        cell.mult_cell(Cell(-1, name="-1"))
+        cell.mult_item(Cell(-1, name="-1"))
         return cell
 
     def __round__(self, n=0):
