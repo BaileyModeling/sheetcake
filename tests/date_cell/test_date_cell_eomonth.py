@@ -1,5 +1,4 @@
 from sheetcake import DateCell, errors, validation_rules, Cell
-from sheetcake.src.cells.date_cell import eomonth_cell
 from datetime import date
 import pytest
 from typing import List
@@ -15,21 +14,21 @@ def test_date_cell_eomonth_operation():
 
 def test_eomonth_cell():
     a = DateCell(date(2024, 3, 1), "a")
-    b = eomonth_cell(a, 5, name="b")
+    b = DateCell.eomonth(a, 5, name="b")
     assert b.value == date(2024, 8, 31)
 
 
 def test_eomonth_cell_dynamic_months():
     a = DateCell(date(2024, 3, 1), "a")
     months = Cell(5)
-    b = eomonth_cell(a, months, name="b")
+    b = DateCell.eomonth(a, months, name="b")
     assert b.value == date(2024, 8, 31)
 
 
 def test_eomonth_cell_dynamic_months_updates():
     a = DateCell(date(2024, 3, 1), "a")
     months = Cell(5)
-    b = eomonth_cell(a, months, name="b")
+    b = DateCell.eomonth(a, months, name="b")
     months.value = 6
     assert b.value == date(2024, 9, 30)
 
