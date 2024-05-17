@@ -1,5 +1,5 @@
 from sheetcake import DateCell, errors, validation_rules
-from sheetcake.src.cells.date_cell import min_date_cell, AbstractDateOperation
+from sheetcake.src.cells.date_cell import AbstractDateOperation
 from datetime import date
 import pytest
 from typing import List
@@ -190,14 +190,6 @@ def test_date_cell_min_operation():
     assert d.value == date(2000, 1, 1)
 
 
-def test_min_date_cell():
-    a = DateCell(date(2000, 1, 1), "a")
-    b = DateCell(date(2024, 1, 1), "b")
-    c = DateCell(date(2025, 1, 1), "c")
-    d = min_date_cell([a, b, c], name="d")
-    assert d.value == date(2000, 1, 1)
-
-
 def test_date_cell_min_operation_updates():
     a = DateCell(date(2000, 1, 1), "a")
     b = DateCell(date(2024, 1, 1), "b")
@@ -348,22 +340,6 @@ def test_date_cell_max_formula_deep(cell_list: List[DateCell]):
     assert e.formula(deep=True) == "max( 2024-01-01, 2025-01-01, 2026-01-01, 2027-01-01 )"
 
 
-def test_date_cell_min_formula(cell_list: List[DateCell]):
-    e = min_date_cell(cells=cell_list, name="e")
-    assert e.formula() == "min( a, b, c, d )"
-
-
-def test_date_cell_min_formula_deep(cell_list: List[DateCell]):
-    e = min_date_cell(cells=cell_list, name="e")
-    assert e.formula(deep=True) == "min( 2024-01-01, 2025-01-01, 2026-01-01, 2027-01-01 )"
-
-
-def test_date_cell_min_formula_with_date(cell_list: List[DateCell]):
-    cell_list[0] = date(2024, 1, 1)
-    e = min_date_cell(cells=cell_list, name="e")
-    assert e.formula() == "min( 2024-01-01, b, c, d )"
-
-
 def test_date_cell_edate_max_combined_value():
     a = DateCell(name="a")
     a.edate_item(date(2028, 1, 1), 12)
@@ -402,16 +378,6 @@ def test_date_cell_max_value_audit(cell_list: List[DateCell]):
 def test_date_cell_max_value_audit_deep(cell_list: List[DateCell]):
     e = DateCell.max(cells=cell_list, name="e")
     assert e.value_audit(deep=True) == "max( 2024-01-01, 2025-01-01, 2026-01-01, 2027-01-01 )"
-
-
-def test_date_cell_min_value_audit(cell_list: List[DateCell]):
-    e = min_date_cell(cells=cell_list, name="e")
-    assert e.value_audit() == "min( a, b, c, d )"
-
-
-def test_date_cell_min_value_audit_deep(cell_list: List[DateCell]):
-    e = min_date_cell(cells=cell_list, name="e")
-    assert e.value_audit(deep=True) == "min( 2024-01-01, 2025-01-01, 2026-01-01, 2027-01-01 )"
 
 
 def test_date_cell_value_audit_equal_date_cell():
