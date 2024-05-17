@@ -242,26 +242,27 @@ class DateCell:
         new_cell.edays_item(cell=date_cell, num_days=num_days, update=True)
         return new_cell
 
+    @classmethod
+    def edate(
+        cls,
+        date_cell: "DateCell",
+        num_months: int,
+        name: str = "<DateCell>",
+        fmt: Callable = fmt.mmddyyyy,
+        callback: Callable = None,
+        locked: bool = False,
+        validation_rules: List[Callable] = None
+    ) -> "DateCell":
+        new_cell = cls(value=None, name=name, fmt=fmt, callback=callback, locked=locked, validation_rules=validation_rules)
+        new_cell.edate_item(cell=date_cell, num_months=num_months, update=True)
+        return new_cell
+
 
 def get_value(obj) -> date:
     if hasattr(obj, 'value'):
         return obj.value
     else:
         return obj
-
-
-def edate_cell(
-    date_cell: DateCell,
-    num_months: int,
-    name: str = "<DateCell>",
-    fmt: Callable = fmt.mmddyyyy,
-    callback: Callable = None,
-    locked: bool = False,
-    validation_rules: List[Callable] = None
-) -> DateCell:
-    new_cell = DateCell(value=None, name=name, fmt=fmt, callback=callback, locked=locked, validation_rules=validation_rules)
-    new_cell.edate_item(cell=date_cell, num_months=num_months, update=True)
-    return new_cell
 
 
 def eomonth_cell(

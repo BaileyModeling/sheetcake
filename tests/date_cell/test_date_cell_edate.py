@@ -1,8 +1,5 @@
 from sheetcake import DateCell, Cell
-from sheetcake.src.cells.date_cell import edate_cell
 from datetime import date
-import pytest
-from typing import List
 
 
 def test_date_cell_edate_operation():
@@ -14,7 +11,7 @@ def test_date_cell_edate_operation():
 
 def test_edate_cell():
     a = DateCell(date(2024, 3, 1), "a")
-    b = edate_cell(a, 5, name="b")
+    b = DateCell.edate(a, 5, name="b")
     assert b.value == date(2024, 8, 1)
 
 
@@ -37,14 +34,14 @@ def test_date_cell_edate_operation_consecutive():
 def test_edate_dynamic_months():
     a = DateCell(date(2024, 3, 1), "a")
     months = Cell(5)
-    b = edate_cell(a, months, name="b")
+    b = DateCell.edate(a, months, name="b")
     assert b.value == date(2024, 8, 1)
 
 
 def test_edate_dynamic_months_updates():
     a = DateCell(date(2024, 3, 1), "a")
     months = Cell(5)
-    b = edate_cell(a, months, name="b")
+    b = DateCell.edate(a, months, name="b")
     months.value = 6
     assert b.value == date(2024, 9, 1)
 
