@@ -28,6 +28,9 @@ if __name__ == '__main__':
 
     monthly_rt = Array.blank(DURATION, name="Monthly Rate")
     monthly_rt.equal_item(daily_rt).mult_item(days_prorated)
+    # a quicker way to do the above
+    monthly_rt2 = Array.mult([daily_rt, days_prorated], name="Monthly Rate 2")
+    monthly_rt2.print()
 
     interest = Array.zeros(DURATION, name="Interest", fmt=fmt.accounting)
     interest.equal_item(bbal).mult_item(monthly_rt)

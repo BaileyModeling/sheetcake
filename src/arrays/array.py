@@ -141,6 +141,27 @@ class Array:
         return cls(array=array, name=name)
 
     @classmethod
+    def mult(cls, arrays: List["Array"], name: str = None, tolerance = 0.0, fmt: Callable = str, callback: Callable = None, locked: bool = False, validation_rules: List[Callable] = None) -> "Array":
+        """
+        Construct an Array that multiplies a list of arrays.
+        """
+        name = name or cls.default_name
+        duration = 0
+        contains_array = False
+        for array in arrays:
+            if is_vector(array):
+                duration = len(array)
+                contains_array = True
+                break
+        if not contains_array:
+            raise ValueError("At least one Array must be passed to Array.mult")
+        array = Array.blank(duration, name=name, fmt=fmt, tolerance=tolerance, callback=callback, locked=locked, validation_rules=validation_rules)
+        array.equal_item(arrays[0])
+        for i in range(1, len(arrays)):
+            array.mult_item(arrays[i])
+        return array
+
+    @classmethod
     def from_values(cls, values: List, name: str = None, fmt: Callable = str, tolerance = 0.0, callback: Callable = None, locked: bool = False, validation_rules: List[Callable] = None) -> "Array":
         """
         Construct an Array from a list of values.

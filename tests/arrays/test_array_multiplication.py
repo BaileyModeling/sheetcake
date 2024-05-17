@@ -125,3 +125,34 @@ def test_mult_operator_array_simplenamespaces_raises_error():
     b = SimpleNamespace(value=40, name='b')
     with pytest.raises(Exception):
         a * b
+
+
+def test_array_mult_class_method_two_arrays():
+    a = Array.from_values(values=(10, 20, 30), name='a')
+    b = Array.from_values(values=(40, 50, 60), name='b')
+    c = Array.mult([a, b])
+    assert c[0] == 400
+    assert c[1] == 1000
+    assert c[2] == 1800
+    assert c.total == 3200
+    a.set_value(0, 0)
+    assert c[0] == 0
+
+
+def test_array_mult_class_method_array_and_cell():
+    a = Cell(10, name='a')
+    b = Array.from_values(values=(40, 50, 60), name='b')
+    c = Array.mult([a, b])
+    assert c[0] == 400
+    assert c[1] == 500
+    assert c[2] == 600
+    assert c.total == 1500
+    a.value = 0
+    assert c.total == 0
+
+
+def test_array_mult_class_method_two_cells():
+    a = Cell(10, name='a')
+    b = Cell(20, name='b')
+    with pytest.raises(Exception):
+        c = Array.mult([a, b])
