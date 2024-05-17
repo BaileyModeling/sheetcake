@@ -20,10 +20,10 @@ def test_array_interest_calculation():
     days_prorated = Array.from_values(values=date_array.prorated_days(exit_date), name="Prorated Days in Month")
 
     monthly_rt = Array.blank(DURATION, name="Monthly Rate")
-    monthly_rt.equal(daily_rt).mult(days_prorated)
+    monthly_rt.equal_item(daily_rt).mult_item(days_prorated)
 
     interest = Array.zeros(DURATION, name="Interest", fmt=fmt.accounting)
-    interest.equal(bbal).mult(monthly_rt)
+    interest.equal_item(bbal).mult_item(monthly_rt)
 
     ebal = EndingBalance.sum([bbal, adv, interest], name='Ending Balance', fmt=fmt.accounting)
     bbal.connect_ending_balance(ebal)

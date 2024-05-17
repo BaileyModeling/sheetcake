@@ -89,7 +89,7 @@ class Array:
     def _is_compatible(self, other) -> bool:
         return len(self.array) == len(other)
 
-    def equal(self, other):
+    def equal_item(self, other):
         if is_vector(other):
             if not self._is_compatible(other):
                 raise TypeError(f"Cannot equal arrays of different length: {len(self.array)}, {len(other)}")
@@ -102,7 +102,7 @@ class Array:
             raise TypeError(f"Cannot equal type {type(self)} and {type(other)}")
         return self
 
-    def add(self, other):
+    def add_item(self, other):
         if is_vector(other):
             if not self._is_compatible(other):
                 raise TypeError(f"Cannot add arrays of different length: {len(self.array)}, {len(other)}")
@@ -115,7 +115,7 @@ class Array:
             raise TypeError(f"Cannot add type {type(self)} and {type(other)}")
         return self
 
-    def mult(self, other):
+    def mult_item(self, other):
         if is_vector(other):
             if not self._is_compatible(other):
                 raise TypeError(f"Cannot mult arrays of different length: {len(self.array)}, {len(other)}")

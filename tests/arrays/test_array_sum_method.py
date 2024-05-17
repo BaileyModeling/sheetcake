@@ -4,7 +4,7 @@ from sheetcake import Array
 def test_adding_one_array_to_blank_array():
     c = Array.blank(num_cols=3, name='c')
     a = Array.from_values(values=(-10, 20, 30), name='a')
-    c.add(a)
+    c.add_item(a)
     assert c.get_value(0) == -10
     assert c.get_value(1) == 20
     assert c.get_value(2) == 30

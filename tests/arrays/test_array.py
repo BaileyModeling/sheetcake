@@ -59,14 +59,14 @@ def test_zeros():
 def test_array_equal_method_string():
     a = Array.from_values(values=(10, 20, 30), name='a')
     with pytest.raises(Exception):
-        c = a.equal("string")
+        c = a.equal_item("string")
 
 
 def test_equal_array_simplenamespaces_raises_error():
     a = Array.from_values(values=(10, 20, 30), name='a')
     b = SimpleNamespace(value=40, name='b')
     with pytest.raises(Exception):
-        a.equal(b)
+        a.equal_item(b)
 
 # initialize array with list of existing Cells
 # make sure it's the same object

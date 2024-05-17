@@ -25,7 +25,7 @@ def test_adding_two_timeseries_with_add_method():
     da = DateArray(date(2024, 1, 1), 3)
     a = TimeSeries.from_values(date_array=da, values=(10, 20, 30), name='a')
     b = TimeSeries.from_values(date_array=da, values=(40, 50, 60), name='b')
-    a.add(b)
+    a.add_item(b)
     assert a.get_value(0) == 50
     assert a.get_value(1) == 70
     assert a.get_value(2) == 90
@@ -50,7 +50,7 @@ def test_adding_cell_and_timeseries(tsa: TimeSeries):
 
 def test_adding_timeseries_add_method_cell(tsa: TimeSeries):
     b = Cell(40, name='b')
-    c = tsa.add(b)
+    c = tsa.add_item(b)
     assert c[0] == 50
     assert c[1] == 60
     assert c[2] == 70
@@ -60,7 +60,7 @@ def test_adding_timeseries_add_method_string_raises_error():
     da = DateArray(date(2024, 1, 1), 3)
     a = TimeSeries.from_values(date_array=da, values=(10, 20, 30), name='a')
     with pytest.raises(Exception):
-        c = a.add("string")
+        c = a.add_item("string")
 
 
 def test_adding_timeseries_add_string_raises_error(tsa: TimeSeries):

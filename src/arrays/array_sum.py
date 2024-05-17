@@ -29,7 +29,7 @@ class ArraySum(Array):
             array_sum.append(cell)
         super().__init__(array=array_sum, name=name)
 
-    def add(self, other):
+    def add_item(self, other):
         # if self.arrays and not (len(other) == len(self.arrays[0])):
         if not len(other) == self.duration:
             raise errors.ImproperConfig(f"Cannot add arrays of different length: {len(other)}, {len(self.arrays[0])}")

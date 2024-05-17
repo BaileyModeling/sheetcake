@@ -5,7 +5,7 @@ import pytest
 def test_adding_one_array_to_array_sum():
     c = ArraySum(arrays=[], name='c', duration=3)
     a = Array.from_values(values=(-10, 20, 30), name='a')
-    c.add(a)
+    c.add_item(a)
     assert c.get_value(0) == -10
     assert c.get_value(1) == 20
     assert c.get_value(2) == 30
@@ -16,8 +16,8 @@ def test_adding_two_arrays_to_array_sum():
     c = ArraySum(arrays=[], name='c', duration=3)
     a = Array.from_values(values=(10, 20, 30), name='a')
     b = Array.from_values(values=(40, 50, 60), name='b')
-    c.add(a)
-    c.add(b)
+    c.add_item(a)
+    c.add_item(b)
     assert c.get_value(0) == 50
     assert c.get_value(1) == 70
     assert c.get_value(2) == 90
@@ -57,7 +57,7 @@ def test_array_sum_add_wrong_duration_raises_error():
     c = ArraySum(arrays=[a, b], name='c', duration=3)
     d = Array.from_values(values=(100, 200, 300, 400), name='d')
     with pytest.raises(Exception):
-        c.add(d)
+        c.add_item(d)
 
 
 def test_array_sum_repr():

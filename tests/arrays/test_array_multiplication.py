@@ -39,7 +39,7 @@ def test_multiplying_array_and_cell():
 def test_multiplying_array_and_cell_method():
     a = Array.from_values(values=(3., 4., 5.5), name='a')
     b = Cell(10, name='b')
-    c = a.mult(b)
+    c = a.mult_item(b)
     assert c[0] == 30
     assert c[1] == 40
     assert c[2] == 55
@@ -48,7 +48,7 @@ def test_multiplying_array_and_cell_method():
 def test_multiplying_array_and_string_method():
     a = Array.from_values(values=(3., 4., 5.5), name='a')
     with pytest.raises(Exception):
-        c = a.mult("string")
+        c = a.mult_item("string")
 
 
 def test_multiplying_cell_and_array():
@@ -117,7 +117,7 @@ def test_multiplying_array_simplenamespaces_raises_error():
     a = Array.from_values(values=(10, 20, 30), name='a')
     b = SimpleNamespace(value=40, name='b')
     with pytest.raises(Exception):
-        a.mult(b)
+        a.mult_item(b)
 
 
 def test_mult_operator_array_simplenamespaces_raises_error():

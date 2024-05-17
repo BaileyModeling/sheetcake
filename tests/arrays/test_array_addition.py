@@ -17,7 +17,7 @@ def test_adding_two_arrays():
 def test_adding_two_arrays_with_add_method():
     a = Array.from_values(values=(10, 20, 30), name='a')
     b = Array.from_values(values=(40, 50, 60), name='b')
-    a.add(b)
+    a.add_item(b)
     assert a.get_value(0) == 50
     assert a.get_value(1) == 70
     assert a.get_value(2) == 90
@@ -45,7 +45,7 @@ def test_adding_cell_and_array():
 def test_adding_array_add_method_cell():
     a = Array.from_values(values=(10, 20, 30), name='a')
     b = Cell(40, name='b')
-    c = a.add(b)
+    c = a.add_item(b)
     assert c[0] == 50
     assert c[1] == 60
     assert c[2] == 70
@@ -54,7 +54,7 @@ def test_adding_array_add_method_cell():
 def test_adding_array_add_method_string_raises_error():
     a = Array.from_values(values=(10, 20, 30), name='a')
     with pytest.raises(Exception):
-        c = a.add("string")
+        c = a.add_item("string")
 
 
 def test_adding_array_add_string_raises_error():
@@ -131,7 +131,7 @@ def test_adding_array_simplenamespaces_raises_error():
     a = Array.from_values(values=(10, 20, 30), name='a')
     b = SimpleNamespace(value=40, name='b')
     with pytest.raises(Exception):
-        a.add(b)
+        a.add_item(b)
 
 
 def test_add_operator_array_simplenamespaces_raises_error():
