@@ -1,6 +1,6 @@
 from typing import Callable, List, Tuple, Dict
 from decimal import Decimal
-from sheetcake import Signal
+from sheetcake import Signal, fmt
 from sheetcake.src.utils import is_number, get_value
 
 
@@ -11,7 +11,7 @@ class Cell:
         value = None,
         name: str = "<Cell>",
         tolerance = 0.0,
-        fmt: Callable = str,
+        fmt: Callable = fmt.comma2,
         callback: Callable = None,
         locked: bool = False,
         validation_rules: List[Callable] = None,
@@ -315,8 +315,6 @@ class Cell:
     __rtruediv__ = __rdiv__
 
     def __floordiv__(self, other):
-        # if hasattr(other, "array"):
-        #     return (1 // other) * self
         cell = Cell()
         cell.equal_item(self)
         cell.floordiv_item(other)
@@ -345,7 +343,6 @@ class Cell:
 
     '''
     def __mod__(self, other):
-    def __pow__(self, other):
     '''
 
     def __abs__(self):
