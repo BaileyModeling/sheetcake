@@ -234,7 +234,7 @@ class Cell:
         return self
 
     @classmethod
-    def sum_cells(cls, cells: List["Cell"], name: str = "<Cell>", tolerance: float = 0, fmt: Callable = str, callback: Callable = None, locked: bool = False, validation_rules: List[Callable] = None) -> "Cell":
+    def sum(cls, cells: List["Cell"], name: str = "<Cell>", tolerance: float = 0, fmt: Callable = str, callback: Callable = None, locked: bool = False, validation_rules: List[Callable] = None) -> "Cell":
         cell = Cell(None, name=name, tolerance=tolerance, fmt=fmt, callback=callback, locked=locked, validation_rules=validation_rules)
         for c in cells:
             cell.add_cell(c, update=False)
@@ -242,7 +242,7 @@ class Cell:
         return cell
 
     @classmethod
-    def mult_cells(cls, cells: List["Cell"], name: str = "<Cell>", tolerance: float = 0, fmt: Callable = str, callback: Callable = None, locked: bool = False, validation_rules: List[Callable] = None) -> "Cell":
+    def mult(cls, cells: List["Cell"], name: str = "<Cell>", tolerance: float = 0, fmt: Callable = str, callback: Callable = None, locked: bool = False, validation_rules: List[Callable] = None) -> "Cell":
         cell = Cell(None, name=name, tolerance=tolerance, fmt=fmt, callback=callback, locked=locked, validation_rules=validation_rules)
         for c in cells:
             cell.mult_cell(c, update=False)
