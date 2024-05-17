@@ -1,6 +1,6 @@
 from typing import Callable, List, Tuple, Dict
 from decimal import Decimal
-from sheetcake import Signal, fmt
+from sheetcake import Signal
 from sheetcake.src.utils import is_number, get_value
 
 
@@ -11,7 +11,7 @@ class Cell:
         value = None,
         name: str = "<Cell>",
         tolerance = 0.0,
-        fmt: Callable = fmt.comma2,
+        fmt: Callable = str,
         callback: Callable = None,
         locked: bool = False,
         validation_rules: List[Callable] = None,

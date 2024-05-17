@@ -26,9 +26,9 @@ class DateCell:
 
         if isinstance(value, DateCell):
             self._value = value.value
-            self.equal(value)
+            self.equal_item(value)
         elif value is not None:
-            self.equal(value)
+            self.equal_item(value)
 
         self.validate()
 
@@ -54,7 +54,7 @@ class DateCell:
         if self.locked:
             print(f"Cannot change value of locked cell {self.name} to {value}")
             return None
-        self.equal(value)
+        self.equal_item(value)
 
     @property
     def year(self):
@@ -133,7 +133,7 @@ class DateCell:
         self.value = value
         self.locked = True
 
-    def equal(self, cell: "DateCell", update: bool = True):
+    def equal_item(self, cell: "DateCell", update: bool = True):
         if hasattr(cell, 'changed'):
             cell.changed.connect(self.update)
         self.operations = EqualDateOperation(cell)

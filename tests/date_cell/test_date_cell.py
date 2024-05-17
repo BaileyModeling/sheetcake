@@ -93,14 +93,14 @@ def test_date_cell_equal_init():
 def test_date_cell_equal_method():
     a = DateCell(value=date(2024, 3, 1), name="Test Date 1")
     b = DateCell(name="Test Date 2")
-    b.equal(a)
+    b.equal_item(a)
     assert b == date(2024, 3, 1)
 
 
 def test_date_cell_equal_method_updates():
     a = DateCell(value=date(2024, 3, 1), name="Test Date 1")
     b = DateCell(name="Test Date 2")
-    b.equal(a)
+    b.equal_item(a)
     a.value = date(2024, 12, 1)
     assert b == date(2024, 12, 1)
 
