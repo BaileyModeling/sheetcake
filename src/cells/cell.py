@@ -346,15 +346,10 @@ class Cell:
     '''
     def __mod__(self, other):
     def __pow__(self, other):
-    def __abs__(self):
     '''
 
-    # def __eq__(self, other: object) -> bool:
-    #     if hasattr(other, "value") and self.value == other.value:
-    #         return True
-    #     if self.value == other:
-    #         return True
-    #     return False
+    def __abs__(self):
+        return abs(self.value)
 
     def __lt__(self, other):
         return self.value < get_value(other)
@@ -373,6 +368,9 @@ class Cell:
 
     def __ge__(self, other):
         return self.value >= get_value(other)
+    
+    def __format__(self, fmt: str):
+        return f"{self.value:{fmt}}"
 
 
 # =============================================================================

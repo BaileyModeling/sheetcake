@@ -237,4 +237,11 @@ def test_cell_meta_data_init():
     assert a.meta_data["key"] == "value"
 
 
-# TODO: test decimal math
+def test_cell_format_method():
+    a = Cell(1000.11)
+    assert f"{a:,.2f}" == "1,000.11"
+
+
+def test_cell_absolute_value():
+    a = Cell(-5)
+    assert abs(a) == 5
