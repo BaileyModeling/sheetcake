@@ -272,39 +272,26 @@ class DateCell:
         new_cell.eomonth_item(cell=date_cell, num_months=num_months, update=True)
         return new_cell
 
+    @classmethod
+    def max(
+        cls,
+        cells: List["DateCell"],
+        name: str = "<DateCell>",
+        fmt: Callable = fmt.mmddyyyy,
+        callback: Callable = None,
+        locked: bool = False,
+        validation_rules: List[Callable] = None
+    ) -> "DateCell":
+        new_cell = cls(value=None, name=name, fmt=fmt, callback=callback, locked=locked, validation_rules=validation_rules)
+        new_cell.max_items(cells=cells, update=True)
+        return new_cell
+
 
 def get_value(obj) -> date:
     if hasattr(obj, 'value'):
         return obj.value
     else:
         return obj
-
-
-# def eomonth_cell(
-#     date_cell: DateCell,
-#     num_months: int = 0,
-#     name: str = "<DateCell>",
-#     fmt: Callable = fmt.mmddyyyy,
-#     callback: Callable = None,
-#     locked: bool = False,
-#     validation_rules: List[Callable] = None
-# ) -> DateCell:
-#     new_cell = DateCell(value=None, name=name, fmt=fmt, callback=callback, locked=locked, validation_rules=validation_rules)
-#     new_cell.eomonth_item(cell=date_cell, num_months=num_months, update=True)
-#     return new_cell
-
-
-def max_date_cell(
-    cells: List[DateCell],
-    name: str = "<DateCell>",
-    fmt: Callable = fmt.mmddyyyy,
-    callback: Callable = None,
-    locked: bool = False,
-    validation_rules: List[Callable] = None
-) -> DateCell:
-    new_cell = DateCell(value=None, name=name, fmt=fmt, callback=callback, locked=locked, validation_rules=validation_rules)
-    new_cell.max_items(cells=cells, update=True)
-    return new_cell
 
 
 def min_date_cell(
