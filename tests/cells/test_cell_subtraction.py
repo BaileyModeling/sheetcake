@@ -35,6 +35,14 @@ def test_cell_subtraction_updates():
     assert c.value == 5
 
 
+def test_cell_subtraction_classmethod():
+    a = Cell(10)
+    b = Cell(3)
+    c = Cell.sub(a, b)
+    a.value = 8
+    assert c.value == 5
+
+
 def test_cell_subtraction_operator():
     a = Cell(8)
     b = Cell(3)

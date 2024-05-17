@@ -252,8 +252,12 @@ class Cell:
     @classmethod
     def div(cls, dividend: "Cell", divisor: "Cell", name: str = "<Cell>", tolerance: float = 0, fmt: Callable = str, callback: Callable = None, locked: bool = False, validation_rules: List[Callable] = None) -> "Cell":
         cell = Cell(dividend, name=name, tolerance=tolerance, fmt=fmt, callback=callback, locked=locked, validation_rules=validation_rules)
-        cell.div_item(divisor)
-        return cell
+        return cell.div_item(divisor)
+
+    @classmethod
+    def sub(cls, minuend: "Cell", subtrahend: "Cell", name: str = "<Cell>", tolerance: float = 0, fmt: Callable = str, callback: Callable = None, locked: bool = False, validation_rules: List[Callable] = None) -> "Cell":
+        cell = Cell(minuend, name=name, tolerance=tolerance, fmt=fmt, callback=callback, locked=locked, validation_rules=validation_rules)
+        return cell.sub_item(subtrahend)
 
     def __add__(self, other):
         if hasattr(other, "array"):
