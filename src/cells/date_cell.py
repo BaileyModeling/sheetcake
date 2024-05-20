@@ -195,6 +195,27 @@ class DateCell:
         if update:
             self.update()
         return self
+    
+    def is_after(self, other: "DateCell", inclusive: bool = False):
+        if hasattr(other, "value"):
+            other_date = other.value
+        else:
+            other_date = other
+        if inclusive:
+            return self.value >= other_date
+        else:
+            print(f"{self.value} > {other_date}: {self.value > other_date}")
+            return self.value > other_date
+    
+    def is_before(self, other: "DateCell", inclusive: bool = False):
+        if hasattr(other, "value"):
+            other_date = other.value
+        else:
+            other_date = other
+        if inclusive:
+            return self.value <= other_date
+        else:
+            return self.value < other_date
 
     def __eq__(self, other: object) -> bool:
         if hasattr(other, "value") and self.value == other.value:
@@ -202,18 +223,32 @@ class DateCell:
         if self.value == other:
             return True
         return False
-    
+
     def __gt__(self, other: object) -> bool:
         if hasattr(other, "value"):
             return self.value > other.value
         if self.value > other:
             return True
         return False
-    
+
+    def __ge__(self, other: object) -> bool:
+        if hasattr(other, "value"):
+            return self.value >= other.value
+        if self.value >= other:
+            return True
+        return False
+
     def __lt__(self, other: object) -> bool:
         if hasattr(other, "value"):
             return self.value < other.value
         if self.value < other:
+            return True
+        return False
+
+    def __le__(self, other: object) -> bool:
+        if hasattr(other, "value"):
+            return self.value <= other.value
+        if self.value <= other:
             return True
         return False
 

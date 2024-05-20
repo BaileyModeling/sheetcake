@@ -60,7 +60,7 @@ class TimeSeries(Array):
         for col in range(len(series[0])):
             cell = SumCell(cells=[row[col] for row in series], name=f"{name}[{col}]", tolerance=tolerance, fmt=fmt, callback=callback, locked=locked, validation_rules=validation_rules)
             array.append(cell)
-        return cls(date_array=date_array, array=array, name=name)
+        return cls(date_array=date_array, array=array, name=name, fmt=fmt)
 
     @classmethod
     def from_values(cls, date_array: DateArray, values: List, name: str = None, fmt: Callable = str, tolerance = 0.0, callback: Callable = None, locked: bool = False, validation_rules: List[Callable] = None) -> "Array":

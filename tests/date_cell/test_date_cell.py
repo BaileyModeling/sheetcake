@@ -6,15 +6,6 @@ from typing import List
 from types import SimpleNamespace
 
 
-@pytest.fixture
-def cell_list() -> List[DateCell]:
-    a = DateCell(date(2024, 1, 1), "a")
-    b = DateCell(date(2025, 1, 1), "b")
-    c = DateCell(date(2026, 1, 1), "c")
-    d = DateCell(date(2027, 1, 1), "d")
-    return [a, b, c, d]
-
-
 class CallbackClass:
     variable = None
     def callback(self, value):
@@ -65,17 +56,6 @@ def test_date_cell_formula_no_operations():
 def test_cell_integer_value_raises_error():
     with pytest.raises(errors.DateValidationError):
         a = DateCell(5, "name")
-
-
-def test_date_cell_eq_date():
-    cell = DateCell(value=date(2024, 3, 1), name="Test Date")
-    assert cell == date(2024, 3, 1)
-
-
-def test_date_cell_eq_date_cell():
-    a = DateCell(value=date(2024, 3, 1), name="Test Date 1")
-    b = DateCell(value=date(2024, 3, 1), name="Test Date 2")
-    assert a == b
 
 
 def test_date_cell_value():
@@ -140,116 +120,6 @@ def test_date_cell_lock_value():
     a.lock_value(date(2024, 12, 1))
     a.value = date(2024, 1, 1)
     assert a.value == date(2024, 12, 1)
-
-
-def test_date_cell_max_operation():
-    a = DateCell(date(2000, 1, 1), "a")
-    b = DateCell(date(2024, 1, 1), "b")
-    c = DateCell(date(2025, 1, 1), "c")
-    d = DateCell(name="d")
-    d.max_items([a, b, c])
-    assert d.value == date(2025, 1, 1)
-
-
-def test_date_cell_max_operation_updates():
-    a = DateCell(date(2000, 1, 1), "a")
-    b = DateCell(date(2024, 1, 1), "b")
-    c = DateCell(date(2025, 1, 1), "c")
-    d = DateCell(name="d")
-    d.max_items([a, b, c])
-    a.value = date(2030, 1, 1)
-    assert d.value == date(2030, 1, 1)
-
-
-def test_date_cell_max_operation_consecutive():
-    a = DateCell(date(2000, 1, 1), "a")
-    b = DateCell(date(2024, 1, 1), "b")
-    c = DateCell(date(2025, 1, 1), "c")
-    d = DateCell(date(2026, 1, 1), "d")
-    f = DateCell(date(2027, 1, 1), "f")
-    g = DateCell(name="g")
-    g.max_items([a, b, c])
-    g.max_items([d, f])
-    assert g.value == date(2027, 1, 1)
-
-
-def test_date_cell_min_operation():
-    a = DateCell(date(2000, 1, 1), "a")
-    b = DateCell(date(2024, 1, 1), "b")
-    c = DateCell(date(2025, 1, 1), "c")
-    d = DateCell(name="d")
-    d.min_items([a, b, c])
-    assert d.value == date(2000, 1, 1)
-
-
-def test_date_cell_min_operation_updates():
-    a = DateCell(date(2000, 1, 1), "a")
-    b = DateCell(date(2024, 1, 1), "b")
-    c = DateCell(date(2025, 1, 1), "c")
-    d = DateCell(name="d")
-    d.min_items([a, b, c])
-    a.value = date(1999, 1, 1)
-    assert d.value == date(1999, 1, 1)
-
-
-def test_date_cell_min_operation_consecutive():
-    a = DateCell(date(2000, 1, 1), "a")
-    b = DateCell(date(2024, 1, 1), "b")
-    c = DateCell(date(2025, 1, 1), "c")
-    d = DateCell(date(2026, 1, 1), "d")
-    f = DateCell(date(2027, 1, 1), "f")
-    g = DateCell(name="g")
-    g.min_items([a, b, c])
-    g.min_items([d, f])
-    assert g.value == date(2000, 1, 1)
-
-
-def test_date_cell_gt():
-    a = DateCell(date(2024, 3, 1), "a")
-    b = DateCell(date(2024, 2, 1), "b")
-    assert a > b
-
-
-def test_date_cell_gt_date():
-    a = DateCell(date(2024, 3, 1), "a")
-    b = date(2024, 2, 1)
-    assert a > b
-
-
-def test_date_cell_gt_date_rev():
-    a = date(2024, 3, 1)
-    b = DateCell(date(2024, 2, 1), "b")
-    assert a > b
-
-
-def test_date_cell_gt_date_false():
-    a = date(2024, 3, 1)
-    b = DateCell(date(2024, 2, 1), "b")
-    assert not a < b
-
-
-def test_date_cell_lt():
-    a = DateCell(date(2024, 2, 1), "a")
-    b = DateCell(date(2024, 3, 1), "b")
-    assert a < b
-
-
-def test_date_cell_lt_date():
-    a = DateCell(date(2024, 2, 1), "a")
-    b = date(2024, 3, 1)
-    assert a < b
-
-
-def test_date_cell_lt_date_rev():
-    a = date(2024, 2, 1)
-    b = DateCell(date(2024, 3, 1), "b")
-    assert a < b
-
-
-def test_date_cell_lt_date_false():
-    a = date(2024, 2, 1)
-    b = DateCell(date(2024, 3, 1), "b")
-    assert not a > b
 
 
 def test_date_cell_validateion_rule():

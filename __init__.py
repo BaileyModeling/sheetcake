@@ -11,6 +11,7 @@ from sheetcake.src.cells.sum_cell import SumCell
 from sheetcake.src.cells.round_cell import RoundCell
 from sheetcake.src.cells.date_cell import DateCell
 from sheetcake.src.cells.count_days_cell import CountDaysCell
+from sheetcake.src.cells.count_months_cell import CountMonthsCell
 from sheetcake.src.rows.row import Row
 from sheetcake.src.rows.date_row import DateRow
 from sheetcake.src.arrays.array import Array
