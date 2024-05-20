@@ -139,3 +139,48 @@ def test_date_cell_is_before_inclusive():
     b = DateCell(date(2024, 3, 1), "b")
     assert a.is_before(b, inclusive=True)
     assert b.is_before(a, inclusive=True)
+
+
+def test_date_cell_is_between():
+    a = DateCell(date(2024, 1, 1), "a")
+    b = DateCell(date(2024, 2, 1), "b")
+    c = DateCell(date(2024, 3, 1), "c")
+    assert b.is_between(a, c)
+    assert not a.is_between(b, c)
+    assert not c.is_between(a, b)
+
+
+def test_date_cell_is_between_incl_start():
+    a = DateCell(date(2024, 1, 1), "a")
+    b = DateCell(date(2024, 1, 1), "b")
+    c = DateCell(date(2024, 3, 1), "c")
+    assert b.is_between(a, c, incl_start=True)
+    assert not b.is_between(a, c, incl_start=False)
+
+
+def test_date_cell_is_between_incl_end():
+    a = DateCell(date(2024, 1, 1), "a")
+    b = DateCell(date(2024, 3, 1), "b")
+    c = DateCell(date(2024, 3, 1), "c")
+    assert b.is_between(a, c, incl_end=True)
+    assert not b.is_between(a, c, incl_end=False)
+
+
+def test_date_cell_is_between_incl_start_incl_end():
+    a = DateCell(date(2024, 1, 1), "a")
+    b = DateCell(date(2024, 1, 1), "b")
+    c = DateCell(date(2024, 3, 1), "c")
+    d = DateCell(date(2024, 3, 1), "d")
+    assert b.is_between(a, c, incl_start=True, incl_end=True)
+    assert d.is_between(a, c, incl_start=True, incl_end=True)
+    assert not b.is_between(a, c, incl_start=False, incl_end=True)
+    assert not d.is_between(a, c, incl_start=True, incl_end=False)
+    assert not b.is_between(a, c, incl_start=False, incl_end=False)
+    assert not d.is_between(a, c, incl_start=False, incl_end=False)
+
+
+def test_date_cell_is_between_dates():
+    a = date(2024, 1, 1)
+    b = DateCell(date(2024, 2, 1), "b")
+    c = date(2024, 3, 1)
+    assert b.is_between(a, c)

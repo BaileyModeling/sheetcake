@@ -204,7 +204,6 @@ class DateCell:
         if inclusive:
             return self.value >= other_date
         else:
-            print(f"{self.value} > {other_date}: {self.value > other_date}")
             return self.value > other_date
     
     def is_before(self, other: "DateCell", inclusive: bool = False):
@@ -216,6 +215,24 @@ class DateCell:
             return self.value <= other_date
         else:
             return self.value < other_date
+        
+    def is_between(self, start: "DateCell", end: "DateCell", incl_start: bool = False, incl_end: bool = False):
+        if hasattr(start, "value"):
+            start_date = start.value
+        else:
+            start_date = start
+        if hasattr(end, "value"):
+            end_date = end.value
+        else:
+            end_date = end
+        if incl_start and incl_end:
+            return start_date <= self.value <= end_date
+        elif incl_start and not incl_end:
+            return start_date <= self.value < end_date
+        elif not incl_start and incl_end:
+            return start_date < self.value <= end_date
+        else:
+            return start_date < self.value < end_date
 
     def __eq__(self, other: object) -> bool:
         if hasattr(other, "value") and self.value == other.value:
